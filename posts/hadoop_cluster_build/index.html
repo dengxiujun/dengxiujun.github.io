@@ -205,7 +205,7 @@ export CLASSPATH=$CLASSPATH:.:${JAVA_HOME}/lib:${JAVA_HOME}/jre/lib
 export PATH=${JAVA_HOME}/bin:${JAVA_HOME}/jre/bin:$PATH</pre></div>
 <p>注：jdk的环境变量配置也可写入 hadoop 用户目录下的 .bashrc 文件，或者 .bash_profile 文件</p>
 
-<h4 id="05-关闭所有服务器的防火墙">05. 关闭所有服务器的防火墙</h4>
+<h3 id="05-关闭所有服务器的防火墙">05. 关闭所有服务器的防火墙</h3>
 
 <p>sudo systemctl stop firewalld    #停止防火墙服务<br />
 sudo systemctl disable firewalld #禁用防火墙服务开机启动</p>
@@ -394,7 +394,7 @@ echo &#34;===========6.69 end===========&#34;
 <p><a href="http://hdpmmaster:8088/">http://hdpmmaster:8088/</a> #NameNode图形界面, 任务分配和任务进度信息的查询
 <a href="http://hdpmmaster:9870/">http://hdpmmaster:9870/</a> #集群结点(Node Of Cluster)图形界面</p>
 
-<p>注：以域名访问需要向该pc的hosts文件中加入 &ldquo;192.168.6.171 hdpmmaster&rdquo;，Windows 操作系统的hosts文件路径在 &ldquo;C:\Windows\System32\drivers\etc\hosts&rdquo;，CentOS操作系统的hosts文件路径在&rdquo;/etc/hosts&rdquo;。</p>
+<p>注：以域名访问需要向该pc的hosts文件中加入 &ldquo;192.168.6.171 hdpmmaster&rdquo;，Windows 操作系统的hosts文件路径在 &ldquo;C:\Windows\System32\drivers\etc\hosts&rdquo;，CentOS操作系统的hosts文件路径在 &ldquo;/etc/hosts&rdquo;。</p>
 
 <p>12) 单词统计示例运行</p>
 <div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">hadoop fs -mkdir /input
@@ -412,7 +412,7 @@ hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.
 
 <p>14) 任务历史服务启动与关闭，web访问地址是 <a href="http://hdpmmaster:19888/jobhistory/">http://hdpmmaster:19888/jobhistory/</a> 端口是在mapred-site.xml中配置的</p>
 
-<p>mapred &ndash;daemon start historyserver #启动
+<p>mapred &ndash;daemon start historyserver #启动<br />
 mapred &ndash;daemon stop historyserver #关闭</p>
 
 <h2 id="四-faq">四、FAQ</h2>
@@ -439,11 +439,11 @@ mapred &ndash;daemon stop historyserver #关闭</p>
 
 <h3 id="03-unhealthy状态的datanode处理-下面只是该现象其中一种原因">03. unhealthy状态的datanode处理(下面只是该现象其中一种原因)</h3>
 
-<p>问题描述: 在<a href="http://hdpmmaster:8088/cluster/nodes的界面出现unhealthy结点">http://hdpmmaster:8088/cluster/nodes的界面出现unhealthy结点</a></p>
+<p>问题描述: 在<a href="http://hdpmmaster:8088/cluster/nodes">http://hdpmmaster:8088/cluster/nodes</a> 的界面出现unhealthy结点</p>
 
 <p>报错信息: yarn.server.nodemanager.DirectoryCollection: Directory /var/lib/hadoop-yarn/cache/yarn/nm-local-dir error, used space above threshold of 90.0%, removing from list of valid directories</p>
 
-<p>解决方案: 加大磁盘容量, 或者清理磁盘空间, 当然也可以提高yarn的监测数值, 即在yarn-site.xml中添加&rdquo;yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage&rdquo;配置, 值是一个百分比数值, 例如&rdquo;95.0&rdquo;</p>
+<p>解决方案: 加大磁盘容量, 或者清理磁盘空间, 当然也可以提高yarn的监测数值, 即在yarn-site.xml中添加&rdquo;yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage&rdquo;配置, 值是一个百分比数值, 例如、&rdquo;95.0&rdquo;</p>
 
 <p>问题原因: 该结点主机的磁盘使用超过90%,</p>
 
@@ -464,8 +464,6 @@ mapred &ndash;daemon stop historyserver #关闭</p>
 
       <footer class="footer">
   <section class="container">
-    
-      <p>.</p>
     
      © 2019
     
