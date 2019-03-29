@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Devops on dengxiujun</title>
+    <link>https://dengxiujun.github.io/series/devops/</link>
+    <description>Recent content in Devops on dengxiujun</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 29 Mar 2019 14:43:22 +0800</lastBuildDate>
+    
+	<atom:link href="https://dengxiujun.github.io/series/devops/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>DevOps 简介</title>
+      <link>https://dengxiujun.github.io/posts/devops_introduction/</link>
+      <pubDate>Fri, 29 Mar 2019 14:43:22 +0800</pubDate>
+      
+      <guid>https://dengxiujun.github.io/posts/devops_introduction/</guid>
+      <description>目标  打造通用, 稳定, 快速, 易于扩展的部署流水线  部署流水线是指软件从版本控制库到用户手中这一过程的自动化表现形式。对软件的每次变更都会经历这样一个自动化的过程 部署流水线包含代码检查, 持续集成, 持续部署, 自动化测试等各个环节  构建自助平台  各项目组可一键创建测试所以需要的容器化Java环境, 数据库等. 并可通过自助平台进行管理 通过自助平台配置自动构建行为 集成日志查看功能   参考示例 零件俱乐部项目的部署流程如下图所示, 开发人员无需关心部署的细节, 只需要推送代码到对应的分支, 就会触发部署流水线部署到相应的环境.
+ 开发人员使用特性分支的git分支模型来开发新功能, 代码需要推送到GitLab仓库 GitLab根据代码仓库中的gitlab-ci.yaml文件来, 触发GitLab CI执行 编译-&amp;gt;测试-&amp;gt;发布镜像-&amp;gt;部署 流水线  特定的处理环节(比如多个feature分支的自动合并, 版本号的确定) 采用Shell或者Python脚本来实现 Java代码的构建会用到Gradle, js代码的构建会用到npm或yarn 执行单元测试, 如果测试失败会终止构建, 并使用邮件通知给本次构建的触发者 编译完成之后从代码仓库中获取Dockerfile文件, 然后使用Docker制作成镜像文件  发布到Harbor, harbor是docker镜像的仓库, 基于官方的Registry 通过kubectl触发Kubernetes执行发布流程 k8s拉取指定镜像, 进行滚动升级  书单 DevOps方法论  《凤凰项目：一个IT运维的传奇故事》 以小说的方式，讲述了一个凌乱的无可救药的运维项目组是如何一步步达成最后高效且舒心的工作状态。
+ 《DevOps实践指南》 《凤凰项目：一个IT运维的传奇故事》 的姊妹篇， 涵盖了DevOps的横向知识，可以当工具书读。
+ 《持续交付》
+ 《Effective DevOps》</description>
+    </item>
+    
+  </channel>
+</rss>

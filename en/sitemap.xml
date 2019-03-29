@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://dengxiujun.github.io/posts/devops_introduction/</loc>
+    <lastmod>2019-03-29T14:43:22+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://dengxiujun.github.io/posts/hugo-coder-wiki/</loc>
     <lastmod>2019-01-17T00:00:00+00:00</lastmod>
   </url>
@@ -61,6 +66,18 @@
   </url>
   
   <url>
+    <loc>https://dengxiujun.github.io/series/devops/</loc>
+    <lastmod>2019-03-29T14:43:22+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://dengxiujun.github.io/series/docker/</loc>
+    <lastmod>2019-03-29T14:43:22+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://dengxiujun.github.io/series/getting-started/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -73,8 +90,14 @@
   </url>
   
   <url>
+    <loc>https://dengxiujun.github.io/series/kubernets/</loc>
+    <lastmod>2019-03-29T14:43:22+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://dengxiujun.github.io/posts/</loc>
-    <lastmod>2019-01-17T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-29T14:43:22+08:00</lastmod>
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"
@@ -104,7 +127,7 @@
   
   <url>
     <loc>https://dengxiujun.github.io/series/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-29T14:43:22+08:00</lastmod>
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"
@@ -126,7 +149,7 @@
   
   <url>
     <loc>https://dengxiujun.github.io/</loc>
-    <lastmod>2019-01-17T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-29T14:43:22+08:00</lastmod>
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"
