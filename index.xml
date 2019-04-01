@@ -6,10 +6,27 @@
     <description>Recent content on dengxiujun</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 29 Mar 2019 15:31:56 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 01 Apr 2019 10:10:40 +0800</lastBuildDate>
     
 	<atom:link href="https://dengxiujun.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>VMware虚拟机转VitrualBOX虚拟机等后续优化操作</title>
+      <link>https://dengxiujun.github.io/posts/after_copy_vm_do/</link>
+      <pubDate>Mon, 01 Apr 2019 10:10:40 +0800</pubDate>
+      
+      <guid>https://dengxiujun.github.io/posts/after_copy_vm_do/</guid>
+      <description>01. VMware虚拟机转VitrualBox虚拟机 01) 打开cmd，并切换到VMware的安装目录下的OVFTool目录
+d: # 盘符切换 cd D:\VMware\VMware Workstation\OVFTool 02) 使用 ovftool 命令转换格式
+ovftool &amp;#34;D:\Virtual Machines\prd_170_vm\prd_170.vmx&amp;#34; &amp;#34;D:\VirtualMachines\prd_170_vb\prd_170.ovf&amp;#34; 注：需要 D:\VirtualMachines\prd_170_vm\prd_170.vmx 该虚拟机处于关机状态
+03) 打开VitrualBOX主界面，依次打开&amp;rdquo;管理&amp;rdquo;&amp;gt;&amp;gt;&amp;ldquo;导入虚拟电脑&amp;rdquo;，在弹出界面中选择 D:\VirtualMachines\prd_170_vb\prd_170.ovf
+04) 处理网卡配置等，如果有安装&amp;rdquo;VM增强插件&amp;rdquo;，可以删除之后安装&amp;rdquo;VitrualBox增强插件&amp;rdquo;
+02. VMware磁盘格式vmdk转VirtualBox磁盘格式vdi 01) 打开cmd，并切换到VitrualBox安装目录
+d: # 盘符切换 cd D:\VirtualBox 02) 使用 VBoxManage.exe clonehd 命令克隆并格式化磁盘格式
+VBoxManage.exe clonehd &amp;#34;D:\Virtual Machines\prd_6.170_vb\prd_6.170.vmdk&amp;#34; &amp;#34;D:\Virtual Machines\prd_6.170_vb\prd_6.170.vdi&amp;#34; --format VDI 03) 上述命令执行到90%的时间点会报错误，错误信息如下，原因是克隆的磁盘和原磁盘uuid重复，此时可以修改原磁盘和新磁盘其中一个的uuid，使用命令如下
+Progress state: E_INVALIDARG VBoxManage.exe: error: Failed to clone medium VBoxManage.exe: error: Cannot register the hard disk &amp;#39;D:\Virtual Machines\prd_6.170_vb\prd_6.170.vdi&amp;#39; {4cb06e65-d214-4361-b9c6-b5faf1f5effa} because a hard disk &amp;#39;D:\Virtual Machines\prd_6.</description>
+    </item>
     
     <item>
       <title>HADOOP(3.0.0)在CENTOS7(RED HAT 7)下完全分布式环境搭建</title>
