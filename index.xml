@@ -6,10 +6,26 @@
     <description>Recent content on dengxiujun</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 01 Apr 2019 10:10:40 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 01 Apr 2019 10:55:56 +0800</lastBuildDate>
     
 	<atom:link href="https://dengxiujun.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Oracle 个人备忘</title>
+      <link>https://dengxiujun.github.io/posts/oracle_reademe/</link>
+      <pubDate>Mon, 01 Apr 2019 10:55:56 +0800</pubDate>
+      
+      <guid>https://dengxiujun.github.io/posts/oracle_reademe/</guid>
+      <description>01. dmp文件导入步骤 01) 用管理员登录, system as sysdba 或者 sys as sysdba
+02) 创建用户 CREATE USER  IDENTIFIED BY ;
+03) 赋权限给新用户
+GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW, EXP_FULL_DATABASE, IMP_FULL_DATABASE, DBA, CONNECT, RESOURCE, CREATE SESSION TO &amp;lt;用户名&amp;gt;;
+04) 进入cmd窗口, IMP /@ FILE=D:\XXX.DMP FULL=Y; 05) 导出命令:
+导出某些指定的表: exp /@ file=d:\xxx.dmp tables=(table1,table2,table3)
+导出某个用户的表: exp /@ file=d:\xxx.dmp owner=
+02. 常用操作 01) 切换用户: CONNECT SYS/123456 AS SYSDBA; 或者 CONN SCOTT/TIGER; CONN 与 CONNECT 一样!</description>
+    </item>
     
     <item>
       <title>VMware虚拟机转VitrualBOX虚拟机等后续优化操作</title>

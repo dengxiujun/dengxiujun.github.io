@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Deng Xiu Jun">
+    <meta name="description" content="Jun&#39;s personal website">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Oracle 个人备忘"/>
+<meta name="twitter:description" content="01. dmp文件导入步骤 01) 用管理员登录, system as sysdba 或者 sys as sysdba
+02) 创建用户 CREATE USER  IDENTIFIED BY ;
+03) 赋权限给新用户
+GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW, EXP_FULL_DATABASE, IMP_FULL_DATABASE, DBA, CONNECT, RESOURCE, CREATE SESSION TO &lt;用户名&gt;;
+04) 进入cmd窗口, IMP /@ FILE=D:\XXX.DMP FULL=Y; 05) 导出命令:
+导出某些指定的表: exp /@ file=d:\xxx.dmp tables=(table1,table2,table3)
+导出某个用户的表: exp /@ file=d:\xxx.dmp owner=
+02. 常用操作 01) 切换用户: CONNECT SYS/123456 AS SYSDBA; 或者 CONN SCOTT/TIGER; CONN 与 CONNECT 一样!"/>
+
+    <meta property="og:title" content="Oracle 个人备忘" />
+<meta property="og:description" content="01. dmp文件导入步骤 01) 用管理员登录, system as sysdba 或者 sys as sysdba
+02) 创建用户 CREATE USER  IDENTIFIED BY ;
+03) 赋权限给新用户
+GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW, EXP_FULL_DATABASE, IMP_FULL_DATABASE, DBA, CONNECT, RESOURCE, CREATE SESSION TO &lt;用户名&gt;;
+04) 进入cmd窗口, IMP /@ FILE=D:\XXX.DMP FULL=Y; 05) 导出命令:
+导出某些指定的表: exp /@ file=d:\xxx.dmp tables=(table1,table2,table3)
+导出某个用户的表: exp /@ file=d:\xxx.dmp owner=
+02. 常用操作 01) 切换用户: CONNECT SYS/123456 AS SYSDBA; 或者 CONN SCOTT/TIGER; CONN 与 CONNECT 一样!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dengxiujun.github.io/posts/oracle_reademe/" />
+<meta property="article:published_time" content="2019-04-01T10:55:56&#43;08:00"/>
+<meta property="article:modified_time" content="2019-04-01T10:55:56&#43;08:00"/>
+
+
+    
+      <base href="https://dengxiujun.github.io/posts/oracle_reademe/">
+    
+    <title>
+  Oracle 个人备忘 · dengxiujun
+</title>
+
+    
+      <link rel="canonical" href="https://dengxiujun.github.io/posts/oracle_reademe/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" integrity="sha256-oSrCnRYXvHG31SBifqP2PM1uje7SJUyX0nTwO2RJV54=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://dengxiujun.github.io/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://dengxiujun.github.io/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://dengxiujun.github.io/images/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.54.0" />
+  </head>
+
+  <body class=" ">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://dengxiujun.github.io">
+      dengxiujun
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://dengxiujun.github.io/about/">About</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://dengxiujun.github.io/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://dengxiujun.github.io/projects/">Projects</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://dengxiujun.github.io/contact/">Contact Me</a>
+          </li>
+        
+      
+      
+        
+        
+        
+          
+            
+              <li class="navigation-item menu-separator">
+                <span>|</span>
+              </li>
+              
+            
+            <li class="navigation-item">
+              <a href="https://dengxiujun.github.io/pt-br/">Português</a>
+            </li>
+          
+        
+          
+        
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Oracle 个人备忘</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2019-04-01T10:55:56&#43;08:00'>
+                April 1, 2019
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              4 minutes read
+            </span>
+          </div>
+          
+          <div class="tags">
+  <i class="fas fa-tag"></i>
+    <a href="https://dengxiujun.github.io/tags/oracle/">oracle</a>
+      <span class="separator">•</span>
+    <a href="https://dengxiujun.github.io/tags/oracle-%E4%B8%B4%E6%97%B6%E8%A1%A8%E7%A9%BA%E9%97%B4/">oracle 临时表空间</a>
+      <span class="separator">•</span>
+    <a href="https://dengxiujun.github.io/tags/oracle%E8%A1%A8%E7%A9%BA%E9%97%B4/">oracle表空间</a>
+      <span class="separator">•</span>
+    <a href="https://dengxiujun.github.io/tags/oracle-%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA/">oracle 导入导出</a>
+      <span class="separator">•</span>
+    <a href="https://dengxiujun.github.io/tags/oracle-%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/">oracle 常用操作</a></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+
+<h3 id="01-dmp文件导入步骤">01. dmp文件导入步骤</h3>
+
+<p>01) 用管理员登录, system as sysdba 或者 sys as sysdba<br />
+02) 创建用户 CREATE USER <USERNAME> IDENTIFIED BY <PASSWORD>;<br />
+03) 赋权限给新用户<br />
+    GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW, EXP_FULL_DATABASE, IMP_FULL_DATABASE, DBA, CONNECT, RESOURCE, CREATE SESSION TO &lt;用户名&gt;;<br />
+04) 进入cmd窗口, IMP <USERNAME>/<PASSWORD>@<SID> FILE=D:\XXX.DMP FULL=Y;
+05) 导出命令:<br />
+    导出某些指定的表: exp <username>/<password>@<SID> file=d:\xxx.dmp tables=(table1,table2,table3)<br />
+    导出某个用户的表: exp <username>/<password>@<SID> file=d:\xxx.dmp owner=<username></p>
+
+<h3 id="02-常用操作">02. 常用操作</h3>
+
+<p>01) 切换用户: CONNECT SYS/123456 AS SYSDBA; 或者 CONN SCOTT/TIGER; CONN 与 CONNECT 一样!<br />
+02) 退出sqlplus: EXIT;<br />
+03) 从cmd进入sqlplus: sqlplus /nolog 或 sqlplus / as sysdba<br />
+04) 描述表 DESC <TABLENAME>;<br />
+05) 表结构修改字段: ALTER TABLE <TABLE_NAME> MODIFY (<FIELD_NAME> <FIELD_TYPE>);<br />
+06) 表结构增加字段: ALTER TABLE <TABLE_NAME> ADD <FIELD_NAME> <FIELD_TYPE>;<br />
+07) 表结构增加注释: COMMENT ON COLUMN <TABLE_NAME>.<FIELD_NAME> IS &lsquo;<COMMENT_CONTENT>&rsquo;;<br />
+08) 显示当前用户: SHOW USER;<br />
+09) 解锁用户: ALTER USER <USERNAME> ACCOUNT UNLOCK;<br />
+10) 修改用户密码: ALTER USER <USERNAME> IDENTIFIED BY <NEW_PASSWORD>;<br />
+11) 显示当前数据库实例: SHOW PARAMETER INTANCE; 或者 SELECT INSTANCE_NAME FROM V$INSTANCE;<br />
+12) sql语句case when 的用法: case when <condition> then <what to do when condition is true> else <what to do when condition is false> end<br />
+13) 表结构字段名称修改: ALTER TABLE <TABLE_NAME> RENAME COLUMN <OLD_FIELD_NAME> TO <NEW_FIELD_NAME>;</p>
+
+<h3 id="03-grant-赋于权限">03.GRANT 赋于权限</h3>
+
+<p>常用的系统权限集合有以下三个:<br />
+CONNECT(基本的连接), RESOURCE(程序开发), DBA(数据库管理)<br />
+常用的数据对象权限有以下五个:<br />
+ALL ON 数据对象名, SELECT ON 数据对象名, UPDATE ON 数据对象名, DELETE ON 数据对象名, INSERT ON 数据对象名, ALTER ON 数据对象名</p>
+
+<p>GRANT CONNECT, RESOURCE TO <TABLE_NAME>;<br />
+GRANT SELECT ON <TABLE_NAME> TO <USER_NAME>;<br />
+GRANT SELECT, INSERT, DELETE ON <TABLE_NAME> TO <USER_NAME>, <USER_NAME>;</p>
+
+<h3 id="04-revoke-回收权限">04.REVOKE 回收权限</h3>
+
+<p>REVOKE CONNECT, RESOURCE FROM <USER_NAME>;<br />
+REVOKE SELECT ON <TABLE_NAME> FROM <USER_NAME>;<br />
+REVOKE SELECT, INSERT, DELETE ON <TABLE_NAME> FROM <USER_NAME>, <USER_NAME>;</p>
+
+<p>==================================================备注 BEGIN============================================
+01. sql语句和sql命令虽然大小写都可以, 但是建议大写, 大写执行速度快, 同时有些命令只能大写!
+02. sql语句和sql命令必须用分号结尾, cmd中的命令不用分号!
+03. sqlplus 登录密码区分大小写
+===================================================备注 END=============================================</p>
+
+<p>&ndash; 查询 DIRECTORY 操作需要的权限
+SELECT DISTINCT PRIVILEGE FROM DBA_SYS_PRIVS WHERE PRIVILEGE LIKE &lsquo;%DIRECTORY%&rsquo;;</p>
+
+<p>&ndash; 查询当前设定的目录配置
+SELECT * FROM DBA_DIRECTORIES;</p>
+
+<p>&ndash; 赋予SCOTT用户删除和创建目录配置的权限
+GRANT DROP ANY DIRECTORY, CREATE ANY DIRECTORY TO SCOTT;
+&ndash; 回收SCOTT用户删除和创建目录配置的权限
+REVOKE DROP ANY DIRECTORY, CREATE ANY DIRECTORY FROM SCOTT;</p>
+
+<p>&ndash; 创建某个目录配置
+CREATE OR REPLACE DIRECTORY <dir_name> AS <dir_path>;
+&ndash; 删除某个目录配置
+DROP DIRECTORY <dir_name>;</p>
+
+<p>&ndash; 赋予和回收某个目录的读写权限
+GRANT READ ON DIRECTORY <dir_name> TO SCOTT;
+GRANT WRITE ON DIRECTORY <dir_name> TO SCOTT;
+REVOKE READ ON DIRECTORY <dir_name> FROM SCOTT;
+REVOKE WRITE ON DIRECTORY <dir_name> FROM SCOTT;</p>
+
+<p>&ndash; 查询当前schma下的所有表
+SELECT T.* FROM USER_TABLES T;</p>
+
+<p>&ndash; 查出所有表和对应schma以及表的字段
+SELECT DISTINCT DCC.OWNER AS &ldquo;用户&rdquo;, DCC.TABLE_NAME AS &ldquo;表名&rdquo;, DCC.COLUMN_NAME AS &ldquo;字段名&rdquo;, DTC.DATA_TYPE AS &ldquo;数据类型&rdquo;, DCC.COMMENTS AS &ldquo;字段描述&rdquo;,
+       (CASE WHEN CONSTS.COLUMN_NAME IS NOT NULL THEN &lsquo;是&rsquo; ELSE &ldquo; END) AS &ldquo;是否主键&rdquo;
+FROM DBA_TAB_COLS DTC
+LEFT JOIN DBA_COL_COMMENTS DCC ON (DTC.COLUMN_NAME = DCC.COLUMN_NAME AND DTC.TABLE_NAME = DCC.TABLE_NAME AND DTC.OWNER = DCC.OWNER)
+LEFT JOIN DBA_TAB_COMMENTS UTC ON (DTC. OWNER = UTC. OWNER AND DTC.TABLE_NAME = UTC.TABLE_NAME)
+LEFT JOIN (SELECT CU.* FROM DBA_CONS_COLUMNS CU, DBA_CONSTRAINTS AU WHERE CU.CONSTRAINT_NAME = AU.CONSTRAINT_NAME AND AU.CONSTRAINT_TYPE = &lsquo;P&rsquo; ) CONSTS
+  ON (DTC.OWNER = CONSTS.OWNER AND DTC.TABLE_NAME = CONSTS.TABLE_NAME AND DTC.COLUMN_NAME = CONSTS.COLUMN_NAME)
+WHERE DTC.OWNER IN (&lsquo;BOMMGMT&rsquo;, &lsquo;CFGMGMT&rsquo;, &lsquo;CHGMGMT&rsquo;, &lsquo;CORE&rsquo;, &lsquo;CUST&rsquo;, &lsquo;MSTDATA&rsquo;, &lsquo;INTEGRATION&rsquo;)
+ORDER BY DCC.OWNER, DCC.TABLE_NAME;</p>
+
+<p>&ndash; 数据库死锁查询
+select s.username,l.object_id, l.session_id,s.serial#, s.lockwait,s.status,s.machine,s.program from v$session s,v$locked_object l where s.sid = l.session_id;
+select sql_text from v$sql where hash_value in (select sql_hash_value from v$session where sid in  (select session_id from v$locked_object));
+select distinct  &lsquo;alter system kill session &ldquo;&rsquo; ||sid||&lsquo;,&rsquo;||serial#||&rdquo;&ldquo;||&lsquo;;&rsquo; as &ldquo;kill sql&rdquo; from V$locked_object t1 left join V$session t2 on t1.session_id = t2.sid;</p>
+
+<p>&ndash; 约束查询
+SELECT UC.TABLE_NAME, UC.CONSTRAINT_NAME, UC.* FROM USER_CONSTRAINTS UC;</p>
+
+<p>&ndash; 查询所有列名
+SELECT * FROM ALL_TAB_COLS WHERE TABLE_NAME = &lsquo;XXX&rsquo;;</p>
+
+<p>&ndash; 查找alert日志, 需要通过 sqlplus / as sysdba 登陆
+show parameter dump;</p>
+
+<p>&ndash; 查询默认临时表空间
+select * from database_properties where property_name=&lsquo;DEFAULT_TEMP_TABLESPACE&rsquo;;
+&ndash; 查询临时表空间数据文件状态
+select tablespace_name,file_name,bytes/1024/1024 file_size,autoextensible from dba_temp_files;
+&ndash; 创建新的临时表空间
+create temporary tablespace temp_01 tempfile &lsquo;/u01/app/oracle/oradata/XE/temp_01.dbf&rsquo; size 1024M autoextend on;
+&ndash; 修改默认表空间为新的表空间
+alter database default temporary tablespace temp_01;
+&ndash; 修改临时表空间大小
+alter database tempfile &lsquo;/u01/app/oracle/oradata/XE/temp.dbf&rsquo; resize 512m;
+&ndash; 设置临时表空间自动增长
+alter database tempfile &lsquo;/u01/app/oracle/oradata/XE/temp.dbf&rsquo; autoextend on next 8m maxsize unlimited;
+&ndash; 查看临时表空间使用情况
+SELECT tbs 表空间名, SUM(totalM) 总共大小M, SUM(usedM) 已使用空间M, SUM(remainedM) 剩余空间M, SUM(usedM) / SUM(totalM) * 100 已使用百分比, SUM(remainedM) / SUM(totalM) * 100 剩余百分比
+FROM (
+  SELECT tb.file_id ID, tb.tablespace_name tbs, tb.file_name NAME, tb.bytes / 1024 / 1024 totalM, (tb.bytes - SUM(NVL(ta.free_space, 0))) / 1024 / 1024 usedM,
+    SUM(NVL(ta.free_space, 0) / 1024 / 1024) remainedM, SUM(NVL(ta.free_space, 0) /(tb.bytes) * 100), (100 - (SUM(NVL(ta.free_space, 0)) /(tb.bytes) * 100))
+  FROM dba_temp_free_space ta, dba_temp_files tb
+  WHERE ta.tablespace_name = tb.tablespace_name
+  GROUP BY tb.tablespace_name, tb.file_name, tb.file_id, tb.bytes
+  ORDER BY tb.tablespace_name
+) GROUP BY tbs;</p>
+
+<p>&ndash; 扩展表空间
+alter database datafile &lsquo;/u01/app/oracle/oradata/XE/system.dbf&rsquo; resize 1024m;
+&ndash; 比空间自动增长
+alter system datafile &lsquo;/u01/app/oracle/oradata/XE/system_01.dbf&rsquo; autoextend on next 50m maxsize 500m;
+&ndash; 新增表空间数据文件
+alter tablespace system add datafile &lsquo;/u01/app/oracle/oradata/XE/system_01.dbf&rsquo; size 1024m;
+&ndash; 查询表空间的所有数据文件
+select * from dba_data_files where tablespace_name=&lsquo;SYSTEM&rsquo;;
+&ndash; 查询表属于哪个表空间
+select tablespace_name,table_name from user_talbes where table_name=&lsquo;employ&rsquo;;
+&ndash; 查看表空间使用情况
+SELECT tbs 表空间名, SUM(totalM) 总共大小M, SUM(usedM) 已使用空间M, SUM(remainedM) 剩余空间M, SUM(usedM) / SUM(totalM) * 100 已使用百分比, SUM(remainedM) / SUM(totalM) * 100 剩余百分比
+FROM (
+  SELECT tb.file_id ID, tb.tablespace_name tbs, tb.file_name NAME, tb.bytes / 1024 / 1024 totalM, (tb.bytes - SUM(NVL(ta.bytes, 0))) / 1024 / 1024 usedM,
+    SUM(NVL(ta.bytes, 0) / 1024 / 1024) remainedM, SUM(NVL(ta.bytes, 0) /(tb.bytes) * 100), (100 - (SUM(NVL(ta.bytes, 0)) /(tb.bytes) * 100))
+  FROM dba_free_space ta, dba_data_files tb
+  WHERE ta.file_id = tb.file_id
+  GROUP BY tb.tablespace_name, tb.file_name, tb.file_id, tb.bytes
+  ORDER BY tb.tablespace_name
+) GROUP BY tbs;</p>
+
+<p>&ndash; 重建并修改默认临时表空间办法:
+&ndash; 01. 查询当前数据库默认临时表空间名和查询临时表空间数据文件
+select * from database_properties where property_name=&lsquo;DEFAULT_TEMP_TABLESPACE&rsquo;;
+select tablespace_name,file_name,bytes/1024/1024 file_size,autoextensible from dba_temp_files;
+&ndash; 02. 创建新的临时表空间
+create temporary tablespace temp02 tempfile &lsquo;E:\oracle\oradata\lims\TEMP02.DBF&rsquo; size 1024M autoextend on;
+&ndash; 03. 修改默认表空间为刚刚建立的临时表空间
+alter database default temporary tablespace temp02;
+&ndash; 查看用户所用临时表空间的情况
+SELECT USERNAME,TEMPORARY_TABLESPACE FROM DBA_USERS;
+&ndash; 删除原来的临时表空间
+drop tablespace temp including contents and datafiles;
+&ndash; 查看所有表空间名确认临时表空间是否已删除
+select tablespace_name from dba_tablespaces;</p>
+
+      </div>
+
+      <footer>
+        
+
+
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+     © 2019
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+       · 
+      [<a href="https://github.com/luizdepra/hugo-coder/tree/"></a>]
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>
