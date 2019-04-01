@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://dengxiujun.github.io/blog/oracle_reademe/</loc>
+    <lastmod>2019-04-01T10:55:56+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dengxiujun.github.io/blog/after_copy_vm_do/</loc>
+    <lastmod>2019-04-01T10:10:40+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dengxiujun.github.io/blog/hadoop_cluster_build/</loc>
+    <lastmod>2019-03-29T15:31:56+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dengxiujun.github.io/blog/devops_introduction/</loc>
+    <lastmod>2019-03-29T14:43:22+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dengxiujun.github.io/blog/emoji-support/</loc>
+    <lastmod>2019-03-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dengxiujun.github.io/blog/index.json</loc>
+    <lastmod>2019-04-01T10:55:56+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://dengxiujun.github.io/series/devops/</loc>
+    <lastmod>2019-03-29T14:43:22+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://dengxiujun.github.io/series/docker/</loc>
+    <lastmod>2019-03-29T14:43:22+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://dengxiujun.github.io/series/kubernets/</loc>
+    <lastmod>2019-03-29T14:43:22+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://dengxiujun.github.io/series/</loc>
+    <lastmod>2019-03-29T14:43:22+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://dengxiujun.github.io/</loc>
+    <lastmod>2019-04-01T10:55:56+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

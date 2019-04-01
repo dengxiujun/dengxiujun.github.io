@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>jun&#39;s home</title>
+    <link>https://dengxiujun.github.io/</link>
+    <description>Recent content on jun&#39;s home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 01 Apr 2019 10:55:56 +0800</lastBuildDate>
+    
+	<atom:link href="https://dengxiujun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>oracle 记录</title>
+      <link>https://dengxiujun.github.io/blog/oracle_reademe/</link>
+      <pubDate>Mon, 01 Apr 2019 10:55:56 +0800</pubDate>
+      
+      <guid>https://dengxiujun.github.io/blog/oracle_reademe/</guid>
+      <description>01. dmp文件导入步骤 01) 用管理员登录, system as sysdba 或者 sys as sysdba 02) 创建用户 CREATE USER IDENTIFIED BY ; 03) 赋权限给新用户 GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW, EXP_FULL_DATABASE, IMP_FULL_DATABASE, DBA, CONNECT, RESOURCE, CREATE SESSION TO &amp;lt;用</description>
+    </item>
+    
+    <item>
+      <title>VMware虚拟机转VitrualBOX虚拟机等后续优化操作</title>
+      <link>https://dengxiujun.github.io/blog/after_copy_vm_do/</link>
+      <pubDate>Mon, 01 Apr 2019 10:10:40 +0800</pubDate>
+      
+      <guid>https://dengxiujun.github.io/blog/after_copy_vm_do/</guid>
+      <description>01. VMware虚拟机转VitrualBox虚拟机 01) 打开cmd，并切换到VMware的安装目录下的OVFTool目录 d: # 盘符切换 cd D:\VMware\VMware Workstation\OVFTool 02) 使用 ovftool</description>
+    </item>
+    
+    <item>
+      <title>HADOOP(3.0.0)在CENTOS7(RED HAT 7)下完全分布式环境搭建</title>
+      <link>https://dengxiujun.github.io/blog/hadoop_cluster_build/</link>
+      <pubDate>Fri, 29 Mar 2019 15:31:56 +0800</pubDate>
+      
+      <guid>https://dengxiujun.github.io/blog/hadoop_cluster_build/</guid>
+      <description>一、环境简介 本教程服务器主机都是CentOS 7(Red Hat 7 亦可)，集群结点分布情况如下表： +---------------+-----------+---------------------------------- |IP |HOSTNAME |备注 +---------------+-----------+---------------------------------- |192.168.6.171 |hdpmmaster |ResourceManager 进程所在机器 +---------------+-----------+---------------------------------- |192.168.6.172 |hdpsmaster |SecondaryNameNode 主机的备机 +---------------+-----------+---------------------------------- |198.168.6.67 |hdpslave67 |datanode</description>
+    </item>
+    
+    <item>
+      <title>DevOps 简介</title>
+      <link>https://dengxiujun.github.io/blog/devops_introduction/</link>
+      <pubDate>Fri, 29 Mar 2019 14:43:22 +0800</pubDate>
+      
+      <guid>https://dengxiujun.github.io/blog/devops_introduction/</guid>
+      <description>目标 打造通用, 稳定, 快速, 易于扩展的部署流水线 部署流水线是指软件从版本控制库到用户手中这一过程的自动化表现形式。对软件的每次变更都会经历</description>
+    </item>
+    
+    <item>
+      <title>Emoji Support</title>
+      <link>https://dengxiujun.github.io/blog/emoji-support/</link>
+      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://dengxiujun.github.io/blog/emoji-support/</guid>
+      <description>&lt;p&gt;Emoji can be enabled in a Hugo project in a number of ways.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

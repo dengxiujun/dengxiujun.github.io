@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>
+      
+          DevOps 简介 - jun&#39;s home
+      
+  </title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="map[]" />
+  <link rel="shortcut icon" type="image/x-icon" href="https://dengxiujun.github.io/img/favicon.ico">
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://dengxiujun.github.io/style.min.7135f8265f0e5668aaf68b968cf560537cb8017044dfb3bdcd7a5d0d8a806b3d.css">
+  <link rel="stylesheet" href="https://dengxiujun.github.io/css/fontawesome-all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+  
+  
+
+  <meta property="og:title" content="DevOps 简介" />
+<meta property="og:description" content="DevOps 简介" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dengxiujun.github.io/blog/devops_introduction/" />
+<meta property="article:published_time" content="2019-03-29T14:43:22&#43;08:00"/>
+<meta property="article:modified_time" content="2019-03-29T14:43:22&#43;08:00"/>
+
+
+
+
+<meta itemprop="name" content="DevOps 简介">
+<meta itemprop="description" content="DevOps 简介">
+
+
+<meta itemprop="datePublished" content="2019-03-29T14:43:22&#43;08:00" />
+<meta itemprop="dateModified" content="2019-03-29T14:43:22&#43;08:00" />
+<meta itemprop="wordCount" content="991">
+
+
+
+<meta itemprop="keywords" content="docker,DevOps,kubernets," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="DevOps 简介"/>
+<meta name="twitter:description" content="DevOps 简介"/>
+
+  <!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+  <!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <![endif]-->
+
+  </head>
+
+  <body>
+    
+  <h1>DevOps 简介</h1>
+  <header>
+  
+  <div class="avatar">
+    <img class="avatarMask" src="https://dengxiujun.github.io/img/avatar.jpg">
+    <a href="https://dengxiujun.github.io"><img src="https://dengxiujun.github.io/img/avatar-border.svg" }}></a>
+  </div>
+  
+  <h2><a class="author" href="https://dengxiujun.github.io" style="text-decoration:none;"></a></h2>
+</header>
+
+  
+  <p class="date">March 29, 2019</p>
+  
+  <div id="contentBody">
+    
+
+<h1 id="目标">目标</h1>
+
+<ol>
+<li>打造通用, 稳定, 快速, 易于扩展的部署流水线
+
+<ul>
+<li>部署流水线是指软件从版本控制库到用户手中这一过程的自动化表现形式。对软件的每次变更都会经历这样一个自动化的过程</li>
+<li>部署流水线包含代码检查, 持续集成, 持续部署, 自动化测试等各个环节</li>
+</ul></li>
+<li>构建自助平台
+
+<ul>
+<li>各项目组可一键创建测试所以需要的容器化Java环境, 数据库等. 并可通过自助平台进行管理</li>
+<li>通过自助平台配置自动构建行为</li>
+<li>集成日志查看功能</li>
+</ul></li>
+</ol>
+
+<h1 id="参考示例">参考示例</h1>
+
+<p>零件俱乐部项目的部署流程如下图所示, 开发人员无需关心部署的细节, 只需要推送代码到对应的分支, 就会触发部署流水线部署到相应的环境.</p>
+
+<p><img src="https://dengxiujun.github.io/images/devops_introduction/publish-workflow.png" alt="" /></p>
+
+<ol>
+<li>开发人员使用<a href="https://git.gantcloud.com/public-group/git-tutorial/wikis/git-feature-based-flow">特性分支</a>的git分支模型来开发新功能, 代码需要推送到<a href="https://docs.gitlab.com/ee/">GitLab</a>仓库</li>
+<li>GitLab根据代码仓库中的gitlab-ci.yaml文件来, 触发<a href="https://docs.gitlab.com/ee/ci/">GitLab CI</a>执行 <code>编译-&gt;测试-&gt;发布镜像-&gt;部署</code> 流水线
+
+<ul>
+<li>特定的处理环节(比如多个feature分支的自动合并, 版本号的确定) 采用<a href="https://www.tutorialspoint.com/unix/shell_scripting.htm">Shell</a>或者<a href="https://www.python.org/">Python</a>脚本来实现</li>
+<li>Java代码的构建会用到<a href="https://gradle.org/">Gradle</a>, js代码的构建会用到<a href="https://www.npmjs.com/">npm</a>或<a href="https://yarn.bootcss.com/">yarn</a></li>
+<li>执行单元测试, 如果测试失败会终止构建, 并使用邮件通知给本次构建的触发者</li>
+<li>编译完成之后从代码仓库中获取<a href="https://docs.docker.com/engine/reference/builder/">Dockerfile</a>文件, 然后使用<a href="https://docs.docker.com/v17.09/engine/docker-overview/">Docker</a>制作成镜像文件</li>
+</ul></li>
+<li>发布到<a href="https://goharbor.io/">Harbor</a>, harbor是docker镜像的仓库, 基于官方的<a href="https://docs.docker.com/registry/">Registry</a></li>
+<li>通过kubectl触发<a href="https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/">Kubernetes</a>执行发布流程</li>
+<li>k8s拉取指定镜像, 进行<a href="https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/">滚动升级</a></li>
+</ol>
+
+<h1 id="书单">书单</h1>
+
+<h2 id="devops方法论">DevOps方法论</h2>
+
+<ul>
+<li><p><a href="https://book.douban.com/subject/26644070/">《凤凰项目：一个IT运维的传奇故事》</a>
+以小说的方式，讲述了一个凌乱的无可救药的运维项目组是如何一步步达成最后高效且舒心的工作状态。</p></li>
+
+<li><p><a href="https://book.douban.com/subject/30186150/">《DevOps实践指南》</a>
+《凤凰项目：一个IT运维的传奇故事》 的姊妹篇， 涵盖了DevOps的横向知识，可以当工具书读。</p></li>
+
+<li><p><a href="https://book.douban.com/subject/6862062/">《持续交付》</a></p></li>
+
+<li><p><a href="https://book.douban.com/subject/26631259/">《Effective DevOps》</a></p></li>
+</ul>
+
+<h2 id="源代码管理-linux系统">源代码管理/Linux系统</h2>
+
+<ul>
+<li><p><a href="https://git-scm.com/book/zh/v2">《git pro》</a>
+网络资源， 免费</p></li>
+
+<li><p><a href="https://book.douban.com/subject/4253716/">《Unix &amp; Linux大学教程》</a>
+Linux, Shell 学习的经典书籍</p></li>
+</ul>
+
+<h2 id="容器化">容器化：</h2>
+
+<ul>
+<li><a href="https://book.douban.com/subject/26285268/">《第一本Docker书》</a></li>
+<li><a href="https://book.douban.com/subject/27082348/">《自己动手写Docker》</a></li>
+</ul>
+
+<h2 id="容器编排">容器编排</h2>
+
+<ul>
+<li><a href="https://jimmysong.io/kubernetes-handbook/cloud-native/kubernetes-and-cloud-native-app-overview.html">《Kubernetes中文指南》</a></li>
+<li><a href="https://book.douban.com/subject/26997846/">《Kubernetes in Action》</a></li>
+<li><a href="https://kubernetes.io/docs/tutorials/">官网教程</a></li>
+</ul>
+
+<h2 id="分布式存储">分布式存储</h2>
+
+<ul>
+<li><a href="https://book.douban.com/subject/26336220/">《Learning Ceph》</a></li>
+<li><a href="https://book.douban.com/subject/27178824/">《Ceph设计原理与实现》</a></li>
+</ul>
+
+<h2 id="自动化测试">自动化测试</h2>
+
+<p>(待补充) 单元测试, ui自动化测试 等</p>
+
+<h2 id="自动化运维">自动化运维</h2>
+
+<p>Ansible</p>
+
+<h2 id="日志">日志</h2>
+
+<p>Elasticsearch, Logstash/Fluentd, Kibana</p>
+
+<h2 id="监控">监控</h2>
+
+<p>Prometheus</p>
+
+<h1 id="路线图">路线图</h1>
+
+<p><img src="https://dengxiujun.github.io/images/devops_introduction/15134301.png" alt="" /></p>
+
+  </div>
+  <footer>
+  <p>
+  &copy; 2019 .
+  Powered by <a href="https://gohugo.io/">Hugo</a>
+  using the <a href="https://github.com/koirand/pulp/">pulp</a> theme.
+  </p>
+</footer>
+
+
+  </body>
+</html>

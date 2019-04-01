@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>
+      
+          HADOOP(3.0.0)在CENTOS7(RED HAT 7)下完全分布式环境搭建 - jun&#39;s home
+      
+  </title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="map[]" />
+  <link rel="shortcut icon" type="image/x-icon" href="https://dengxiujun.github.io/img/favicon.ico">
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://dengxiujun.github.io/style.min.7135f8265f0e5668aaf68b968cf560537cb8017044dfb3bdcd7a5d0d8a806b3d.css">
+  <link rel="stylesheet" href="https://dengxiujun.github.io/css/fontawesome-all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+  
+  
+
+  <meta property="og:title" content="HADOOP(3.0.0)在CENTOS7(RED HAT 7)下完全分布式环境搭建" />
+<meta property="og:description" content="HADOOP(3.0.0)在CENTOS7(RED HAT 7)下完全分布式环境搭建" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dengxiujun.github.io/blog/hadoop_cluster_build/" />
+<meta property="article:published_time" content="2019-03-29T15:31:56&#43;08:00"/>
+<meta property="article:modified_time" content="2019-03-29T15:31:56&#43;08:00"/>
+
+<meta itemprop="name" content="HADOOP(3.0.0)在CENTOS7(RED HAT 7)下完全分布式环境搭建">
+<meta itemprop="description" content="HADOOP(3.0.0)在CENTOS7(RED HAT 7)下完全分布式环境搭建">
+
+
+<meta itemprop="datePublished" content="2019-03-29T15:31:56&#43;08:00" />
+<meta itemprop="dateModified" content="2019-03-29T15:31:56&#43;08:00" />
+<meta itemprop="wordCount" content="3108">
+
+
+
+<meta itemprop="keywords" content="hadoop," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HADOOP(3.0.0)在CENTOS7(RED HAT 7)下完全分布式环境搭建"/>
+<meta name="twitter:description" content="HADOOP(3.0.0)在CENTOS7(RED HAT 7)下完全分布式环境搭建"/>
+
+  <!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+  <!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <![endif]-->
+
+  </head>
+
+  <body>
+    
+  <h1>HADOOP(3.0.0)在CENTOS7(RED HAT 7)下完全分布式环境搭建</h1>
+  <header>
+  
+  <div class="avatar">
+    <img class="avatarMask" src="https://dengxiujun.github.io/img/avatar.jpg">
+    <a href="https://dengxiujun.github.io"><img src="https://dengxiujun.github.io/img/avatar-border.svg" }}></a>
+  </div>
+  
+  <h2><a class="author" href="https://dengxiujun.github.io" style="text-decoration:none;"></a></h2>
+</header>
+
+  
+  <p class="date">March 29, 2019</p>
+  
+  <div id="contentBody">
+    
+
+<h2 id="一-环境简介">一、环境简介</h2>
+
+<p>本教程服务器主机都是CentOS 7(Red Hat 7 亦可)，集群结点分布情况如下表：</p>
+
+<pre><code>+---------------+-----------+----------------------------------
+|IP             |HOSTNAME   |备注
++---------------+-----------+----------------------------------
+|192.168.6.171  |hdpmmaster |ResourceManager 进程所在机器
++---------------+-----------+----------------------------------
+|192.168.6.172  |hdpsmaster |SecondaryNameNode 主机的备机
++---------------+-----------+----------------------------------
+|198.168.6.67   |hdpslave67 |datanode
++---------------+-----------+----------------------------------
+|198.168.6.68   |hdpslave68 |datanode
++---------------+-----------+----------------------------------
+|198.168.6.69   |hdpslave68 |datanode
++---------------+-----------+----------------------------------
+</code></pre>
+
+<h2 id="二-linux-环境准备">二、Linux 环境准备</h2>
+
+<h3 id="01-创建hadoop用户">01. 创建hadoop用户</h3>
+
+<p>01) 新建用户: adduser hadoop(注: 在创建hadoop用户的同时也创建了hadoop用户组)
+02) 给hadoop用户添加登录密码: passwd hadoop
+03) 把hadoop用户加入到hadoop用户组: usermod -a -G hadoop hadoop
+03) 赋予用户root权限, 向/etc/sudoers中添加&rdquo;hadoop ALL=(ALL) ALL&rdquo;，如果没有写的权限需要先执行 chmod +w /etc/sudoers
+注：以上所有操作都是在root用户下完成，非root用户可以在所有命令前加sudo</p>
+
+<h3 id="02-hostname-处理">02. HOSTNAME 处理</h3>
+
+<p>01) 修改服务器的 hostname，使用命令 hostnamectl set-hostname <new_host_name></p>
+
+<pre><code>+---------------+----------------------------------------------
++IP             +command
++---------------+----------------------------------------------
+|192.168.6.171  |hostnamectl set-hostname hdpmmaster
++---------------+----------------------------------------------
+|192.168.6.172  |hostnamectl set-hostname hdpsmaster
++---------------+----------------------------------------------
+|192.168.6.67   |hostnamectl set-hostname hdpslave67
++---------------+----------------------------------------------
+|192.168.6.68   |hostnamectl set-hostname hdpslave68
++---------------+----------------------------------------------
+|192.168.6.69   |hostnamectl set-hostname hdpslave69
++---------------+----------------------------------------------
+</code></pre>
+
+<p>02) 向/etc/hosts文件中添加域名和IP的映射，内容如下</p>
+
+<pre><code>192.168.6.171           hdpmmaster
+192.168.6.172           hdpsmaster
+192.168.6.67            hdpslave67
+192.168.6.68            hdpslave68
+192.168.6.69            hdpslave69
+</code></pre>
+
+<p>注：以上所有操作都是在root用户下完成，非root用户可以在所有命令前加sudo</p>
+
+<h3 id="03-ssh免密码登录">03. ssh免密码登录</h3>
+
+<p>01) ssh安装，使用命令 sudo yum isntall -y openssd<br />
+02) ssh dsa算法密钥对生成，分别在5台机器执行以下3条命令</p>
+
+<pre><code>ssh-keygen -t dsa -P '' -f ~/.ssh/id_dsa
+cat ~/.ssh/id_dsa.pub &gt;&gt; ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+</code></pre>
+
+<p>03) 复制公钥到集群服务器，使用命令 ssh-copy-id <user>@<host>, 示例：复制 hdpslave67(192.168.6.67) 的公钥到 hdpslave68(192.168.6.68)<br />
+<img src="https://dengxiujun.github.io/images/hadoop_cluster_bulid/ssh-copy.png" alt="ssh-copy-id" title="ssh-copy-id 示例" />
+注：可以执行 ssh hadoop@hdpslave68 命令看是否需要输入登录密码来确认是否陈功，同时避免以后检查出什么问题最好保证集群中的服务器能够两两无密码登录。</p>
+
+<h3 id="04-jdk-安装">04. JDK 安装</h3>
+
+<p>01) 下载 jdk 的 rpm 安装文件<br />
+02) 使用命令 sudo rpm -ivh jdk-8u144-linux-x64.rpm 安装<br />
+03) JDK 环境变量配置：sudo vi /etc/profile</p>
+
+<pre><code>export JAVA_HOME=/usr/java/jdk1.8.0_144
+export JRE_HOME=${JAVA_HOME}/jre
+export CLASSPATH=$CLASSPATH:.:${JAVA_HOME}/lib:${JAVA_HOME}/jre/lib
+export PATH=${JAVA_HOME}/bin:${JAVA_HOME}/jre/bin:$PATH
+</code></pre>
+
+<p>注：jdk的环境变量配置也可写入 hadoop 用户目录下的 .bashrc 文件，或者 .bash_profile 文件</p>
+
+<h3 id="05-关闭所有服务器的防火墙">05. 关闭所有服务器的防火墙</h3>
+
+<p>sudo systemctl stop firewalld    #停止防火墙服务<br />
+sudo systemctl disable firewalld #禁用防火墙服务开机启动</p>
+
+<h2 id="三-haoop-安装以及配置">三、HAOOP 安装以及配置</h2>
+
+<p>01) 下载并安装 hadoop (版本：3.0.0)</p>
+
+<pre><code>wget http://mirrors.shuosc.org/apache/hadoop/common/hadoop-3.0.0/hadoop-3.0.0.tar.gz
+tar -xzf hadoop-3.0.0.tar.gz -C /usr/local/
+cd /usr/local/
+ln -s hadoop-3.0.0/ hadoop #建立软链接, 也可直接使用 mv hadoop-3.0.0 hadoop 命令改名
+</code></pre>
+
+<p>02) 配置 hadoop 环境变量，向 /home/hadoop/.bashrc 文件添加以下内容</p>
+
+<pre><code># HADOOP
+export HADOOP_HOME=/usr/local/hadoop
+export PATH=$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$PATH
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export HADOOP_INSTALL=$HADOOP_HOME
+export HADOOP_MAPRED_HOME=$HADOOP_HOME
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export HADOOP_YARN_HOME=$HADOOP_HOME
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+</code></pre>
+
+<p>03) 配置 hadoop 安装目录(/usr/local/hadoop)下的 etc/hadoop/core-site.xml</p>
+
+<pre><code>&lt;configuration&gt;
+    &lt;property&gt;
+        &lt;name&gt;fs.defaultFS&lt;/name&gt;
+        &lt;value&gt;hdfs://hdpmmaster:9000&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;
+        &lt;value&gt;file:///usr/local/hadoop/hdptmp&lt;/value&gt;
+        &lt;description&gt;Abase for other temporary directories.&lt;/description&gt;
+    &lt;/property&gt;
+&lt;/configuration&gt;
+
+04) 配置 hadoop 安装目录(/usr/local/hadoop)下的 etc/hadoop/hdfs-site.xml
+
+&lt;configuration&gt;
+    &lt;property&gt;
+        &lt;name&gt;dfs.replication&lt;/name&gt;
+        &lt;value&gt;1&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;
+        &lt;value&gt;file:///usr/local/hadoop/hadoop_data/hdfs/namenode&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;
+        &lt;value&gt;file:///usr/local/hadoop/hadoop_data/hdfs/datanode&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;dfs.namenode.secondary.http-address&lt;/name&gt;
+        &lt;value&gt;hdpsmaster:9868&lt;/value&gt;
+    &lt;/property&gt;
+&lt;/configuration&gt;
+
+05) 配置 hadoop 安装目录(/usr/local/hadoop)下的 etc/hadoop/mapred-site.xml
+
+&lt;configuration&gt;
+    &lt;property&gt;
+        &lt;name&gt;mapreduce.framework.name&lt;/name&gt;
+        &lt;value&gt;yarn&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt;
+        &lt;value&gt;hdpmmaster:10020&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt;
+        &lt;value&gt;hdpmmaster:19888&lt;/value&gt;
+    &lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre>
+
+<p>06) 配置 hadoop 安装目录(/usr/local/hadoop)下的 etc/hadoop/yarn-site.xml</p>
+
+<pre><code>&lt;configuration&gt;
+
+&lt;!-- Site specific YARN configuration properties --&gt;
+
+    &lt;property&gt;
+        &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;
+        &lt;value&gt;mapreduce_shuffle&lt;/value&gt;
+    &lt;/property&gt;
+
+    &lt;property&gt;
+        &lt;name&gt;yarn.nodemanager.env-whitelist&lt;/name&gt;
+        &lt;value&gt;JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PREPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_MAPRED_HOME&lt;/value&gt;
+    &lt;/property&gt;
+
+    &lt;property&gt;
+        &lt;name&gt;yarn.nodemanager.resource.cpu-vcores&lt;/name&gt;
+        &lt;value&gt;2&lt;/value&gt;
+    &lt;/property&gt;
+
+&lt;!--
+    &lt;property&gt;
+        &lt;name&gt;yarn.nodemanager.resource.memory-mb&lt;/name&gt;
+        &lt;value&gt;3072&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.scheduler.maximum-allocation-mb&gt;&lt;/name&gt;
+        &lt;value&gt;3052&lt;/value&gt;
+    &lt;/property&gt;
+--&gt;
+
+    &lt;property&gt;
+        &lt;name&gt;yarn.resourcemanager.scheduler.address&lt;/name&gt;
+        &lt;value&gt;hdpmmaster:8030&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.resourcemanager.resource-tracker.address&lt;/name&gt;
+        &lt;value&gt;hdpmmaster:8031&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.resourcemanager.address&lt;/name&gt;
+        &lt;value&gt;hdpmmaster:8032&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.resourcemanager.admin.address&lt;/name&gt;
+        &lt;value&gt;hdpmmaster:8033&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.resourcemanager.webapp.address&lt;/name&gt;
+        &lt;value&gt;hdpmmaster:8088&lt;/value&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.nodemanager.vmem-check-enabled&lt;/name&gt;
+        &lt;value&gt;false&lt;/value&gt;
+    &lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre>
+
+<p>07) 配置 hadoop 安装目录(/usr/local/hadoop)下的 etc/hadoop/workers</p>
+
+<pre><code>hdpsmaster
+hdpslave67
+hdpslave68
+hdpslave69
+</code></pre>
+
+<p>注：该 workers 文件也可以配置为ip，如下</p>
+
+<pre><code>192.168.6.171
+192.168.6.67
+192.168.6.68
+192.168.6.69
+</code></pre>
+
+<p>08) 配置 hadoop 安装目录(/usr/local/hadoop)下的 etc/hadoop/hadoop-env.sh</p>
+
+<p>export JAVA_HOME=/usr/java/latest  #去掉前面的&rsquo;#&lsquo;, 且写入jdk的安装路径, 这里的写法用latest是为了以后jdk升级不用修改该配置, 当然也可以写jdk安装的绝对路径, 即&rdquo;/usr/java1.8.0_144&rdquo;</p>
+
+<p>09) 格式化namenode</p>
+
+<p>hdfs namenode -format</p>
+
+<p>注：格式化之前需要将剩余的主机都如此配置hadoop，最简单的做法就是配置好一台，然后直接复制到剩余的主机服务器上。同时后续可能需要修改配置文件每次都需要同步配置文件，可以写个简单的同步脚本，内容如下。</p>
+
+<pre><code># 名称: scphdp.sh
+# 路径: /usr/local/hadoop
+# 备注: 01. 需要添加执行权限, chmod +x /usr/local/hadoop/scphdp.sh
+#       02. 注意修改集群的ip
+echo &quot;==========6.67 begin==========&quot;
+scp -r etc/hadoop hadoop@192.168.6.67:/usr/local/hadoop/etc
+echo &quot;===========6.67 end===========&quot;
+
+echo &quot;==========6.68 begin==========&quot;
+scp -r etc/hadoop hadoop@192.168.6.68:/usr/local/hadoop/etc
+echo &quot;===========6.68 end===========&quot;
+
+echo &quot;==========6.69 begin==========&quot;
+scp -r etc/hadoop hadoop@192.168.6.69:/usr/local/hadoop/etc
+echo &quot;===========6.69 end===========&quot;
+
+
+#echo &quot;==========6.172 begin==========&quot;
+#scp -r etc/hadoop hadoop@192.168.6.172:/usr/local/hadoop/etc
+#echo &quot;===========6.172 end===========&quot;
+</code></pre>
+
+<p>10) 启动集群</p>
+
+<pre><code>start-all.sh
+</code></pre>
+
+<p>注：启动之后通过 jps 命令查看java后台进程，各个结点的java进程信息如下</p>
+
+<pre><code>+---------------+-----------+--------------------------------------------------
+|IP             |HOSTNAME   |java进程
++---------------+-----------+--------------------------------------------------
+|192.168.6.171  |hdpmmaster |ResourceManager, NameNode, Jps
++---------------+-----------+--------------------------------------------------
+|192.168.6.172  |hdpsmaster |Jps, SecondaryNameNode, NodeManager, DataNode
++---------------+-----------+--------------------------------------------------
+|198.168.6.67   |hdpslave67 |NodeManager, Jps, DataNode
++---------------+-----------+--------------------------------------------------
+|198.168.6.68   |hdpslave68 |NodeManager, Jps, DataNode
++---------------+-----------+--------------------------------------------------
+|198.168.6.69   |hdpslave68 |NodeManager, Jps, DataNode
++---------------+-----------+--------------------------------------------------
+</code></pre>
+
+<p>11) 在有图形界面的pc上访问下面两个地址链接，查看相关信息</p>
+
+<p><a href="http://hdpmmaster:8088/">http://hdpmmaster:8088/</a> #NameNode图形界面, 任务分配和任务进度信息的查询
+<a href="http://hdpmmaster:9870/">http://hdpmmaster:9870/</a> #集群结点(Node Of Cluster)图形界面</p>
+
+<p>注：以域名访问需要向该pc的hosts文件中加入 &ldquo;192.168.6.171 hdpmmaster&rdquo;，Windows 操作系统的hosts文件路径在 &ldquo;C:\Windows\System32\drivers\etc\hosts&rdquo;，CentOS操作系统的hosts文件路径在 &ldquo;/etc/hosts&rdquo;。</p>
+
+<p>12) 单词统计示例运行</p>
+
+<pre><code>hadoop fs -mkdir /input
+hadoop fs -chmod -R 775 /input
+hadoop fs -put /usr/local/hadoop/LICENSE.txt /input 
+hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.0.0.jar wordcount /input /output
+</code></pre>
+
+<p>注:<br />
+&emsp;&emsp;01.  每次执行上面的 hadoop jar 命令，需要确认集群结点上的 /output 目录是否存在，存在则使用命令 &ldquo;hadoop fs -rmr -f  /output&rdquo;删除该目录</p>
+
+<p>&emsp;&emsp;02.  执行成功之后可以在 <a href="http://hdpmmaster:9870/explorer.html">http://hdpmmaster:9870/explorer.html</a> 中的&rdquo;/output&rdquo;文件夹中找到输出结果，允许下载和预览该结果文件</p>
+
+<p>13) 停止集群</p>
+
+<p>stop-all.sh</p>
+
+<p>14) 任务历史服务启动与关闭，web访问地址是 <a href="http://hdpmmaster:19888/jobhistory/">http://hdpmmaster:19888/jobhistory/</a> 端口是在mapred-site.xml中配置的</p>
+
+<p>mapred &ndash;daemon start historyserver #启动<br />
+mapred &ndash;daemon stop historyserver #关闭</p>
+
+<h2 id="四-faq">四、FAQ</h2>
+
+<h3 id="01-物理内存或虚拟内存监测溢出">01. 物理内存或虚拟内存监测溢出</h3>
+
+<p>问题描述: 执行任务的时虚拟内存溢出</p>
+
+<p>报错信息: Container [pid=5623,containerID=container_1514514155753_0001_01_000002] is running beyond virtual memory limits. Current usage: 155.1 MB of 1 GB physical memory used; 2.4 GB of 2.1 GB virtual memory used. Killing container.</p>
+
+<p>解决方案:<br />
+&emsp;&emsp;方案一: 关闭虚拟内存监测, 在yarn-site.xml文件中添加&rdquo;yarn.nodemanager.vmem-check-enabled&rdquo;配置, 值为&rdquo;false&rdquo;(该方案不建议在正式环境中使用)<br />
+&emsp;&emsp;方案二: 提高内存配置, 参考 <a href="http://blog.chinaunix.net/uid-25691489-id-5587957.html">http://blog.chinaunix.net/uid-25691489-id-5587957.html</a></p>
+
+<h3 id="02-datanode和namenode都启动成功-但datanode没有与namenode关联成功">02. datanode和namenode都启动成功，但datanode没有与namenode关联成功</h3>
+
+<p>问题描述: 集群启动正常, 使用jps查看各个结点的java进程也是对的, 但是无法打开<a href="http://hdpmmaster:8088">http://hdpmmaster:8088</a>, 虽然<a href="http://hdpmmaster:9870能访问">http://hdpmmaster:9870能访问</a>, 但是查看 DataNode 页面没有看到任何一个结点。</p>
+
+<p>报错信息: 查看任何一个 DataNode 结点的日志文件(HADOOP_HOME/logs/hadoop-hadoop-datanode-hdpsmaster.log)含有: Retrying connect to server: hdpmmaster/192.168.6.171:9000. Already tried 0 time(s); retry policy is RetryUpToMaximumCountWithFixedSleep(maxRetries=10, sleepTime=1000 MILLISECONDS)</p>
+
+<p>解决方案: 查看 hdpmmaster/192.168.6.171 主机的hosts文件中是否有&rdquo;127.0.0.1 hdpmmaster&rdquo;, 删除该行, 重新格式化集群(hdfs namenode -format).</p>
+
+<p>问题原因: 因为将hdpmmaster映射在了localhost, 所以DataNode结点无法访问到该NameNode, 同时也无法打开<a href="http://hdpmmaster:8088">http://hdpmmaster:8088</a>. 可以通过查看格式化集群结点时最后的提示信息来判定是否有出现该问题. 如果是&rdquo;SHUTDOWN_MSG: Shutting down NameNode at localhost/127.0.0.1&rdquo;, 表示映射错误; 如果是&rdquo;SHUTDOWN_MSG: Shutting down NameNode at hdpmmaster/192.168.6.171&rdquo;, 表示映射是正确的. 当然这一切都要在所有集群主机能够互相ping通的前提下, 即需要的所有端口都开放, 或者直接关闭防火墙, 该教程为简洁就是直接关闭集群所有主机的防火墙.</p>
+
+<h3 id="03-unhealthy状态的datanode处理-下面只是该现象其中一种原因">03. unhealthy状态的datanode处理(下面只是该现象其中一种原因)</h3>
+
+<p>问题描述: 在<a href="http://hdpmmaster:8088/cluster/nodes">http://hdpmmaster:8088/cluster/nodes</a> 的界面出现unhealthy结点</p>
+
+<p>报错信息: yarn.server.nodemanager.DirectoryCollection: Directory /var/lib/hadoop-yarn/cache/yarn/nm-local-dir error, used space above threshold of 90.0%, removing from list of valid directories</p>
+
+<p>解决方案: 加大磁盘容量, 或者清理磁盘空间, 当然也可以提高yarn的监测数值, 即在yarn-site.xml中添加&rdquo;yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage&rdquo;配置, 值是一个百分比数值, 例如、&rdquo;95.0&rdquo;</p>
+
+<p>问题原因: 该结点主机的磁盘使用超过90%,</p>
+
+  </div>
+  <footer>
+  <p>
+  &copy; 2019 .
+  Powered by <a href="https://gohugo.io/">Hugo</a>
+  using the <a href="https://github.com/koirand/pulp/">pulp</a> theme.
+  </p>
+</footer>
+
+
+  </body>
+</html>

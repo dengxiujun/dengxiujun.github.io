@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>
+      
+          VMware虚拟机转VitrualBOX虚拟机等后续优化操作 - jun&#39;s home
+      
+  </title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="map[]" />
+  <link rel="shortcut icon" type="image/x-icon" href="https://dengxiujun.github.io/img/favicon.ico">
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://dengxiujun.github.io/style.min.7135f8265f0e5668aaf68b968cf560537cb8017044dfb3bdcd7a5d0d8a806b3d.css">
+  <link rel="stylesheet" href="https://dengxiujun.github.io/css/fontawesome-all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+  
+  
+
+  <meta property="og:title" content="VMware虚拟机转VitrualBOX虚拟机等后续优化操作" />
+<meta property="og:description" content="VMware虚拟机转VitrualBOX虚拟机等后续优化操作，包括扩硬盘" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dengxiujun.github.io/blog/after_copy_vm_do/" />
+<meta property="article:published_time" content="2019-04-01T10:10:40&#43;08:00"/>
+<meta property="article:modified_time" content="2019-04-01T10:10:40&#43;08:00"/>
+
+<meta itemprop="name" content="VMware虚拟机转VitrualBOX虚拟机等后续优化操作">
+<meta itemprop="description" content="VMware虚拟机转VitrualBOX虚拟机等后续优化操作，包括扩硬盘">
+
+
+<meta itemprop="datePublished" content="2019-04-01T10:10:40&#43;08:00" />
+<meta itemprop="dateModified" content="2019-04-01T10:10:40&#43;08:00" />
+<meta itemprop="wordCount" content="818">
+
+
+
+<meta itemprop="keywords" content="vm,vbox,virtual box," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="VMware虚拟机转VitrualBOX虚拟机等后续优化操作"/>
+<meta name="twitter:description" content="VMware虚拟机转VitrualBOX虚拟机等后续优化操作，包括扩硬盘"/>
+
+  <!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+  <!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <![endif]-->
+
+  </head>
+
+  <body>
+    
+  <h1>VMware虚拟机转VitrualBOX虚拟机等后续优化操作</h1>
+  <header>
+  
+  <div class="avatar">
+    <img class="avatarMask" src="https://dengxiujun.github.io/img/avatar.jpg">
+    <a href="https://dengxiujun.github.io"><img src="https://dengxiujun.github.io/img/avatar-border.svg" }}></a>
+  </div>
+  
+  <h2><a class="author" href="https://dengxiujun.github.io" style="text-decoration:none;"></a></h2>
+</header>
+
+  
+  <p class="date">April 1, 2019</p>
+  
+  <div id="contentBody">
+    
+
+<h3 id="01-vmware虚拟机转vitrualbox虚拟机">01. VMware虚拟机转VitrualBox虚拟机</h3>
+
+<p>01) 打开cmd，并切换到VMware的安装目录下的OVFTool目录</p>
+
+<pre><code>d: # 盘符切换
+cd D:\VMware\VMware Workstation\OVFTool
+</code></pre>
+
+<p>02) 使用 ovftool 命令转换格式</p>
+
+<pre><code>ovftool &quot;D:\Virtual Machines\prd_170_vm\prd_170.vmx&quot; &quot;D:\VirtualMachines\prd_170_vb\prd_170.ovf&quot;
+</code></pre>
+
+<p>注：需要 D:\VirtualMachines\prd_170_vm\prd_170.vmx 该虚拟机处于关机状态</p>
+
+<p>03) 打开VitrualBOX主界面，依次打开&rdquo;管理&rdquo;&gt;&gt;&ldquo;导入虚拟电脑&rdquo;，在弹出界面中选择 D:\VirtualMachines\prd_170_vb\prd_170.ovf</p>
+
+<p>04) 处理网卡配置等，如果有安装&rdquo;VM增强插件&rdquo;，可以删除之后安装&rdquo;VitrualBox增强插件&rdquo;</p>
+
+<h3 id="02-vmware磁盘格式vmdk转virtualbox磁盘格式vdi">02. VMware磁盘格式vmdk转VirtualBox磁盘格式vdi</h3>
+
+<p>01) 打开cmd，并切换到VitrualBox安装目录</p>
+
+<pre><code>d: # 盘符切换
+cd D:\VirtualBox
+</code></pre>
+
+<p>02) 使用 VBoxManage.exe clonehd 命令克隆并格式化磁盘格式</p>
+
+<pre><code>VBoxManage.exe clonehd &quot;D:\Virtual Machines\prd_6.170_vb\prd_6.170.vmdk&quot; &quot;D:\Virtual Machines\prd_6.170_vb\prd_6.170.vdi&quot; --format VDI
+</code></pre>
+
+<p>03) 上述命令执行到90%的时间点会报错误，错误信息如下，原因是克隆的磁盘和原磁盘uuid重复，此时可以修改原磁盘和新磁盘其中一个的uuid，使用命令如下</p>
+
+<pre><code>Progress state: E_INVALIDARG
+VBoxManage.exe: error: Failed to clone medium
+VBoxManage.exe: error: Cannot register the hard disk 'D:\Virtual Machines\prd_6.170_vb\prd_6.170.vdi' {4cb06e65-d214-4361-b9c6-b5faf1f5effa} because a hard disk 'D:\Virtual Machines\prd_6.170_vb\prd_6.170.vdi' with UUID {0160913f-6e83-4cd6-97b7-c9e24d9cd26d} already exists
+VBoxManage.exe: error: Details: code E_INVALIDARG (0x80070057), component VirtualBoxWrap, interface IVirtualBox
+VBoxManage.exe: error: Context: &quot;enum RTEXITCODE __cdecl handleCloneMedium(struct HandlerArg *)&quot; at line 954 of file VBoxManageDisk.cpp
+VBoxManage.exe internalcommands sethduuid &quot;D:\Virtual Machines\prd_6.170_vb\prd_6.170.vdi&quot;
+</code></pre>
+
+<p>04) 打开VirtualBox主界面，依次选择&rdquo;管理&rdquo;&gt;&gt;&ldquo;虚拟介质管理&rdquo;，在弹出界面中选中原来的vmdk磁盘并使用右键释放和删除该vmdk介质
+<img src="https://dengxiujun.github.io/images/after_copy_vm_do/102301_K5s3_2884716.png" alt="102301_K5s3_2884716" /></p>
+
+<p>05) 打开转换后的虚拟机的设置界面，&rdquo;存储&rdquo;&gt;&gt;&ldquo;控制器&rdquo;&gt;&gt;&ldquo;添加虚拟硬盘&rdquo;，然后在弹出界面中选择转换后的dvi磁盘
+<img src="https://dengxiujun.github.io/images/after_copy_vm_do/103101_E4VE_2884716.png" alt="103101_E4VE_2884716" /></p>
+
+<h3 id="03-磁盘扩容">03. 磁盘扩容</h3>
+
+<p>方案一：使用&rdquo;VBoxManage modifyhd&rdquo;命令</p>
+
+<p>打开cmd，并切换到VitrualBox安装目录执行以下命令</p>
+
+<p>VBoxManage modifyhd &ldquo;D:\Virtual Machines\prd_6.170\prd_6.170.vdi&rdquo; –-resize 102400</p>
+
+<p>注：该命令只支持vdi格式的磁盘</p>
+
+<p>方案二：针对不同操作系统采用新增磁盘挂载方式</p>
+
+<p>linux参考 <a href="http://www.linuxidc.com/Linux/2011-02/32083.htm">http://www.linuxidc.com/Linux/2011-02/32083.htm</a></p>
+
+<p>windows请自行百度</p>
+
+  </div>
+  <footer>
+  <p>
+  &copy; 2019 .
+  Powered by <a href="https://gohugo.io/">Hugo</a>
+  using the <a href="https://github.com/koirand/pulp/">pulp</a> theme.
+  </p>
+</footer>
+
+
+  </body>
+</html>

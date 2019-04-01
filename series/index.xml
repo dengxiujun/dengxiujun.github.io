@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Series on jun&#39;s home</title>
+    <link>https://dengxiujun.github.io/series/</link>
+    <description>Recent content in Series on jun&#39;s home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 29 Mar 2019 14:43:22 +0800</lastBuildDate>
+    
+	<atom:link href="https://dengxiujun.github.io/series/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Devops</title>
+      <link>https://dengxiujun.github.io/series/devops/</link>
+      <pubDate>Fri, 29 Mar 2019 14:43:22 +0800</pubDate>
+      
+      <guid>https://dengxiujun.github.io/series/devops/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Docker</title>
+      <link>https://dengxiujun.github.io/series/docker/</link>
+      <pubDate>Fri, 29 Mar 2019 14:43:22 +0800</pubDate>
+      
+      <guid>https://dengxiujun.github.io/series/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Kubernets</title>
+      <link>https://dengxiujun.github.io/series/kubernets/</link>
+      <pubDate>Fri, 29 Mar 2019 14:43:22 +0800</pubDate>
+      
+      <guid>https://dengxiujun.github.io/series/kubernets/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
