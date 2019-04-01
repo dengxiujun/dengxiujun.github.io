@@ -10,7 +10,7 @@
     <meta name="keywords" content="blog,developer,personal">
 
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Oracle 个人备忘"/>
+<meta name="twitter:title" content="oracle 记录"/>
 <meta name="twitter:description" content="01. dmp文件导入步骤 01) 用管理员登录, system as sysdba 或者 sys as sysdba
 02) 创建用户 CREATE USER  IDENTIFIED BY ;
 03) 赋权限给新用户
@@ -20,7 +20,7 @@ GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW, EXP_FU
 导出某个用户的表: exp /@ file=d:\xxx.dmp owner=
 02. 常用操作 01) 切换用户: CONNECT SYS/123456 AS SYSDBA; 或者 CONN SCOTT/TIGER; CONN 与 CONNECT 一样!"/>
 
-    <meta property="og:title" content="Oracle 个人备忘" />
+    <meta property="og:title" content="oracle 记录" />
 <meta property="og:description" content="01. dmp文件导入步骤 01) 用管理员登录, system as sysdba 或者 sys as sysdba
 02) 创建用户 CREATE USER  IDENTIFIED BY ;
 03) 赋权限给新用户
@@ -39,7 +39,7 @@ GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW, EXP_FU
       <base href="https://dengxiujun.github.io/posts/oracle_reademe/">
     
     <title>
-  Oracle 个人备忘 · dengxiujun
+  oracle 记录 · dengxiujun
 </title>
 
     
@@ -127,7 +127,7 @@ GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW, EXP_FU
     <article>
       <header>
         <div class="post-title">
-          <h1 class="title">Oracle 个人备忘</h1>
+          <h1 class="title">oracle 记录</h1>
         </div>
         <div class="post-meta">
           <div class="date">
@@ -139,7 +139,7 @@ GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW, EXP_FU
             </span>
             <span class="reading-time">
               <i class="fas fa-clock"></i>
-              4 minutes read
+              5 minutes read
             </span>
           </div>
           
@@ -205,76 +205,73 @@ GRANT SELECT, INSERT, DELETE ON <TABLE_NAME> TO <USER_NAME>, <USER_NAME>;</p>
 REVOKE SELECT ON <TABLE_NAME> FROM <USER_NAME>;<br />
 REVOKE SELECT, INSERT, DELETE ON <TABLE_NAME> FROM <USER_NAME>, <USER_NAME>;</p>
 
-<p>==================================================备注 BEGIN============================================
-01. sql语句和sql命令虽然大小写都可以, 但是建议大写, 大写执行速度快, 同时有些命令只能大写!
-02. sql语句和sql命令必须用分号结尾, cmd中的命令不用分号!
-03. sqlplus 登录密码区分大小写
-===================================================备注 END=============================================</p>
+<h3 id="05-重建并修改默认临时表空间办法">05. 重建并修改默认临时表空间办法:</h3>
 
-<p>&ndash; 查询 DIRECTORY 操作需要的权限
-SELECT DISTINCT PRIVILEGE FROM DBA_SYS_PRIVS WHERE PRIVILEGE LIKE &lsquo;%DIRECTORY%&rsquo;;</p>
+<p>01) 查询当前数据库默认临时表空间名和查询临时表空间数据文件<br />
+select * from database_properties where property_name=&lsquo;DEFAULT_TEMP_TABLESPACE&rsquo;;<br />
+select tablespace_name,file_name,bytes/1024/1024 file_size,autoextensible from dba_temp_files;<br />
+02) 创建新的临时表空间<br />
+create temporary tablespace temp02 tempfile &lsquo;E:\oracle\oradata\lims\TEMP02.DBF&rsquo; size 1024M autoextend on;<br />
+03) 修改默认表空间为刚刚建立的临时表空间<br />
+alter database default temporary tablespace temp02;<br />
+&ndash; 查看用户所用临时表空间的情况<br />
+SELECT USERNAME,TEMPORARY_TABLESPACE FROM DBA_USERS;<br />
+&ndash; 删除原来的临时表空间<br />
+drop tablespace temp including contents and datafiles;<br />
+&ndash; 查看所有表空间名确认临时表空间是否已删除<br />
+select tablespace_name from dba_tablespaces;</p>
 
-<p>&ndash; 查询当前设定的目录配置
-SELECT * FROM DBA_DIRECTORIES;</p>
+<h3 id="00-备忘">00. 备忘</h3>
 
-<p>&ndash; 赋予SCOTT用户删除和创建目录配置的权限
-GRANT DROP ANY DIRECTORY, CREATE ANY DIRECTORY TO SCOTT;
-&ndash; 回收SCOTT用户删除和创建目录配置的权限
-REVOKE DROP ANY DIRECTORY, CREATE ANY DIRECTORY FROM SCOTT;</p>
-
-<p>&ndash; 创建某个目录配置
-CREATE OR REPLACE DIRECTORY <dir_name> AS <dir_path>;
-&ndash; 删除某个目录配置
-DROP DIRECTORY <dir_name>;</p>
-
-<p>&ndash; 赋予和回收某个目录的读写权限
-GRANT READ ON DIRECTORY <dir_name> TO SCOTT;
-GRANT WRITE ON DIRECTORY <dir_name> TO SCOTT;
-REVOKE READ ON DIRECTORY <dir_name> FROM SCOTT;
-REVOKE WRITE ON DIRECTORY <dir_name> FROM SCOTT;</p>
-
-<p>&ndash; 查询当前schma下的所有表
-SELECT T.* FROM USER_TABLES T;</p>
-
-<p>&ndash; 查出所有表和对应schma以及表的字段
-SELECT DISTINCT DCC.OWNER AS &ldquo;用户&rdquo;, DCC.TABLE_NAME AS &ldquo;表名&rdquo;, DCC.COLUMN_NAME AS &ldquo;字段名&rdquo;, DTC.DATA_TYPE AS &ldquo;数据类型&rdquo;, DCC.COMMENTS AS &ldquo;字段描述&rdquo;,
-       (CASE WHEN CONSTS.COLUMN_NAME IS NOT NULL THEN &lsquo;是&rsquo; ELSE &ldquo; END) AS &ldquo;是否主键&rdquo;
+<p>01) sql语句和sql命令虽然大小写都可以, 但是建议大写, 大写执行速度快, 同时有些命令只能大写!<br />
+02) sql语句和sql命令必须用分号结尾, cmd中的命令不用分号!<br />
+03) sqlplus 登录密码区分大小写
+04) 查询 DIRECTORY 操作需要的权限: SELECT DISTINCT PRIVILEGE FROM DBA_SYS_PRIVS WHERE PRIVILEGE LIKE &lsquo;%DIRECTORY%&rsquo;;<br />
+05) 查询当前设定的目录配置: SELECT * FROM DBA_DIRECTORIES;<br />
+06) 赋予SCOTT用户删除和创建目录配置的权限: GRANT DROP ANY DIRECTORY, CREATE ANY DIRECTORY TO SCOTT;<br />
+07) 回收SCOTT用户删除和创建目录配置的权限: REVOKE DROP ANY DIRECTORY, CREATE ANY DIRECTORY FROM SCOTT;<br />
+08) 创建某个目录配置: CREATE OR REPLACE DIRECTORY <dir_name> AS <dir_path>;<br />
+09) 删除某个目录配置: DROP DIRECTORY <dir_name>;..
+10) 赋予和回收某个目录的读写权限:</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">GRANT READ ON DIRECTORY &lt;dir_name&gt; TO SCOTT;
+GRANT WRITE ON DIRECTORY &lt;dir_name&gt; TO SCOTT;
+REVOKE READ ON DIRECTORY &lt;dir_name&gt; FROM SCOTT;
+REVOKE WRITE ON DIRECTORY &lt;dir_name&gt; FROM SCOTT;</pre></div>
+<p>11) 查询当前schma下的所有表: SELECT T.* FROM USER_TABLES T;<br />
+12) 查出所有表和对应schma以及表的字段</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">SELECT DISTINCT DCC.OWNER AS &#34;用户&#34;, DCC.TABLE_NAME AS &#34;表名&#34;, DCC.COLUMN_NAME AS &#34;字段名&#34;, DTC.DATA_TYPE AS &#34;数据类型&#34;, DCC.COMMENTS AS &#34;字段描述&#34;,
+       (CASE WHEN CONSTS.COLUMN_NAME IS NOT NULL THEN &#39;是&#39; ELSE &#39;&#39; END) AS &#34;是否主键&#34;
 FROM DBA_TAB_COLS DTC
 LEFT JOIN DBA_COL_COMMENTS DCC ON (DTC.COLUMN_NAME = DCC.COLUMN_NAME AND DTC.TABLE_NAME = DCC.TABLE_NAME AND DTC.OWNER = DCC.OWNER)
 LEFT JOIN DBA_TAB_COMMENTS UTC ON (DTC. OWNER = UTC. OWNER AND DTC.TABLE_NAME = UTC.TABLE_NAME)
-LEFT JOIN (SELECT CU.* FROM DBA_CONS_COLUMNS CU, DBA_CONSTRAINTS AU WHERE CU.CONSTRAINT_NAME = AU.CONSTRAINT_NAME AND AU.CONSTRAINT_TYPE = &lsquo;P&rsquo; ) CONSTS
+LEFT JOIN (SELECT CU.* FROM DBA_CONS_COLUMNS CU, DBA_CONSTRAINTS AU WHERE CU.CONSTRAINT_NAME = AU.CONSTRAINT_NAME AND AU.CONSTRAINT_TYPE = &#39;P&#39; ) CONSTS
   ON (DTC.OWNER = CONSTS.OWNER AND DTC.TABLE_NAME = CONSTS.TABLE_NAME AND DTC.COLUMN_NAME = CONSTS.COLUMN_NAME)
-WHERE DTC.OWNER IN (&lsquo;BOMMGMT&rsquo;, &lsquo;CFGMGMT&rsquo;, &lsquo;CHGMGMT&rsquo;, &lsquo;CORE&rsquo;, &lsquo;CUST&rsquo;, &lsquo;MSTDATA&rsquo;, &lsquo;INTEGRATION&rsquo;)
-ORDER BY DCC.OWNER, DCC.TABLE_NAME;</p>
-
-<p>&ndash; 数据库死锁查询
-select s.username,l.object_id, l.session_id,s.serial#, s.lockwait,s.status,s.machine,s.program from v$session s,v$locked_object l where s.sid = l.session_id;
+WHERE DTC.OWNER IN (&#39;BOMMGMT&#39;, &#39;CFGMGMT&#39;, &#39;CHGMGMT&#39;, &#39;CORE&#39;, &#39;CUST&#39;, &#39;MSTDATA&#39;, &#39;INTEGRATION&#39;)
+ORDER BY DCC.OWNER, DCC.TABLE_NAME;</pre></div>
+<p>13) 数据库死锁查询</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">select s.username,l.object_id, l.session_id,s.serial#, s.lockwait,s.status,s.machine,s.program from v$session s,v$locked_object l where s.sid = l.session_id;
 select sql_text from v$sql where hash_value in (select sql_hash_value from v$session where sid in  (select session_id from v$locked_object));
-select distinct  &lsquo;alter system kill session &ldquo;&rsquo; ||sid||&lsquo;,&rsquo;||serial#||&rdquo;&ldquo;||&lsquo;;&rsquo; as &ldquo;kill sql&rdquo; from V$locked_object t1 left join V$session t2 on t1.session_id = t2.sid;</p>
+select distinct  &#39;alter system kill session &#39;&#39;&#39; ||sid||&#39;,&#39;||serial#||&#39;&#39;&#39;&#39;||&#39;;&#39; as &#34;kill sql&#34; from V$locked_object t1 left join V$session t2 on t1.session_id = t2.sid;</pre></div>
+<p>14) 约束查询: SELECT UC.TABLE_NAME, UC.CONSTRAINT_NAME, UC.* FROM USER_CONSTRAINTS UC;<br />
+15) 查询所有列名: SELECT * FROM ALL_TAB_COLS WHERE TABLE_NAME = &lsquo;XXX&rsquo;;<br />
+16) 查找alert日志, 需要通过 sqlplus / as sysdba 登陆, 然后输入: show parameter dump;</p>
 
-<p>&ndash; 约束查询
-SELECT UC.TABLE_NAME, UC.CONSTRAINT_NAME, UC.* FROM USER_CONSTRAINTS UC;</p>
+<h3 id="06-临时表空间相关处理">06. 临时表空间相关处理</h3>
 
-<p>&ndash; 查询所有列名
-SELECT * FROM ALL_TAB_COLS WHERE TABLE_NAME = &lsquo;XXX&rsquo;;</p>
-
-<p>&ndash; 查找alert日志, 需要通过 sqlplus / as sysdba 登陆
-show parameter dump;</p>
-
-<p>&ndash; 查询默认临时表空间
-select * from database_properties where property_name=&lsquo;DEFAULT_TEMP_TABLESPACE&rsquo;;
-&ndash; 查询临时表空间数据文件状态
-select tablespace_name,file_name,bytes/1024/1024 file_size,autoextensible from dba_temp_files;
-&ndash; 创建新的临时表空间
-create temporary tablespace temp_01 tempfile &lsquo;/u01/app/oracle/oradata/XE/temp_01.dbf&rsquo; size 1024M autoextend on;
-&ndash; 修改默认表空间为新的表空间
-alter database default temporary tablespace temp_01;
-&ndash; 修改临时表空间大小
-alter database tempfile &lsquo;/u01/app/oracle/oradata/XE/temp.dbf&rsquo; resize 512m;
-&ndash; 设置临时表空间自动增长
-alter database tempfile &lsquo;/u01/app/oracle/oradata/XE/temp.dbf&rsquo; autoextend on next 8m maxsize unlimited;
-&ndash; 查看临时表空间使用情况
-SELECT tbs 表空间名, SUM(totalM) 总共大小M, SUM(usedM) 已使用空间M, SUM(remainedM) 剩余空间M, SUM(usedM) / SUM(totalM) * 100 已使用百分比, SUM(remainedM) / SUM(totalM) * 100 剩余百分比
+<p>01) 查询默认临时表空间<br />
+<code>select * from database_properties where property_name='DEFAULT_TEMP_TABLESPACE';</code><br />
+02) 查询临时表空间数据文件状态:<br />
+<code>select tablespace_name,file_name,bytes/1024/1024 file_size,autoextensible from dba_temp_files;</code><br />
+03) 创建新的临时表空间<br />
+<code>create temporary tablespace temp_01 tempfile '/u01/app/oracle/oradata/XE/temp_01.dbf' size 1024M autoextend on;</code><br />
+04) 修改默认表空间为新的表空间<br />
+<code>alter database default temporary tablespace temp_01;</code><br />
+05) 修改临时表空间大小<br />
+<code>alter database tempfile '/u01/app/oracle/oradata/XE/temp.dbf' resize 512m;</code><br />
+06) 设置临时表空间自动增长<br />
+<code>alter database tempfile '/u01/app/oracle/oradata/XE/temp.dbf' autoextend on next 8m maxsize unlimited;</code><br />
+07) 查看临时表空间使用情况:</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">SELECT tbs 表空间名, SUM(totalM) 总共大小M, SUM(usedM) 已使用空间M, SUM(remainedM) 剩余空间M, SUM(usedM) / SUM(totalM) * 100 已使用百分比, SUM(remainedM) / SUM(totalM) * 100 剩余百分比
 FROM (
   SELECT tb.file_id ID, tb.tablespace_name tbs, tb.file_name NAME, tb.bytes / 1024 / 1024 totalM, (tb.bytes - SUM(NVL(ta.free_space, 0))) / 1024 / 1024 usedM,
     SUM(NVL(ta.free_space, 0) / 1024 / 1024) remainedM, SUM(NVL(ta.free_space, 0) /(tb.bytes) * 100), (100 - (SUM(NVL(ta.free_space, 0)) /(tb.bytes) * 100))
@@ -282,20 +279,21 @@ FROM (
   WHERE ta.tablespace_name = tb.tablespace_name
   GROUP BY tb.tablespace_name, tb.file_name, tb.file_id, tb.bytes
   ORDER BY tb.tablespace_name
-) GROUP BY tbs;</p>
+) GROUP BY tbs;</pre></div>
+<h3 id="07-表空间相关处理">07. 表空间相关处理</h3>
 
-<p>&ndash; 扩展表空间
-alter database datafile &lsquo;/u01/app/oracle/oradata/XE/system.dbf&rsquo; resize 1024m;
-&ndash; 比空间自动增长
-alter system datafile &lsquo;/u01/app/oracle/oradata/XE/system_01.dbf&rsquo; autoextend on next 50m maxsize 500m;
-&ndash; 新增表空间数据文件
-alter tablespace system add datafile &lsquo;/u01/app/oracle/oradata/XE/system_01.dbf&rsquo; size 1024m;
-&ndash; 查询表空间的所有数据文件
-select * from dba_data_files where tablespace_name=&lsquo;SYSTEM&rsquo;;
-&ndash; 查询表属于哪个表空间
-select tablespace_name,table_name from user_talbes where table_name=&lsquo;employ&rsquo;;
-&ndash; 查看表空间使用情况
-SELECT tbs 表空间名, SUM(totalM) 总共大小M, SUM(usedM) 已使用空间M, SUM(remainedM) 剩余空间M, SUM(usedM) / SUM(totalM) * 100 已使用百分比, SUM(remainedM) / SUM(totalM) * 100 剩余百分比
+<p>01) 扩展表空间<br />
+<code>alter database datafile '/u01/app/oracle/oradata/XE/system.dbf' resize 1024m;</code><br />
+02) 表空间自动增长<br />
+<code>alter system datafile '/u01/app/oracle/oradata/XE/system_01.dbf' autoextend on next 50m maxsize 500m;</code><br />
+03) 新增表空间数据文件<br />
+<code>alter tablespace system add datafile '/u01/app/oracle/oradata/XE/system_01.dbf' size 1024m;</code><br />
+04) 查询表空间的所有数据文件<br />
+<code>select * from dba_data_files where tablespace_name='SYSTEM';</code><br />
+05) 查询表属于哪个表空间<br />
+<code>select tablespace_name,table_name from user_talbes where table_name='employ';</code><br />
+06) 查看表空间使用情况</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">SELECT tbs 表空间名, SUM(totalM) 总共大小M, SUM(usedM) 已使用空间M, SUM(remainedM) 剩余空间M, SUM(usedM) / SUM(totalM) * 100 已使用百分比, SUM(remainedM) / SUM(totalM) * 100 剩余百分比
 FROM (
   SELECT tb.file_id ID, tb.tablespace_name tbs, tb.file_name NAME, tb.bytes / 1024 / 1024 totalM, (tb.bytes - SUM(NVL(ta.bytes, 0))) / 1024 / 1024 usedM,
     SUM(NVL(ta.bytes, 0) / 1024 / 1024) remainedM, SUM(NVL(ta.bytes, 0) /(tb.bytes) * 100), (100 - (SUM(NVL(ta.bytes, 0)) /(tb.bytes) * 100))
@@ -303,23 +301,7 @@ FROM (
   WHERE ta.file_id = tb.file_id
   GROUP BY tb.tablespace_name, tb.file_name, tb.file_id, tb.bytes
   ORDER BY tb.tablespace_name
-) GROUP BY tbs;</p>
-
-<p>&ndash; 重建并修改默认临时表空间办法:
-&ndash; 01. 查询当前数据库默认临时表空间名和查询临时表空间数据文件
-select * from database_properties where property_name=&lsquo;DEFAULT_TEMP_TABLESPACE&rsquo;;
-select tablespace_name,file_name,bytes/1024/1024 file_size,autoextensible from dba_temp_files;
-&ndash; 02. 创建新的临时表空间
-create temporary tablespace temp02 tempfile &lsquo;E:\oracle\oradata\lims\TEMP02.DBF&rsquo; size 1024M autoextend on;
-&ndash; 03. 修改默认表空间为刚刚建立的临时表空间
-alter database default temporary tablespace temp02;
-&ndash; 查看用户所用临时表空间的情况
-SELECT USERNAME,TEMPORARY_TABLESPACE FROM DBA_USERS;
-&ndash; 删除原来的临时表空间
-drop tablespace temp including contents and datafiles;
-&ndash; 查看所有表空间名确认临时表空间是否已删除
-select tablespace_name from dba_tablespaces;</p>
-
+) GROUP BY tbs;</pre></div>
       </div>
 
       <footer>
