@@ -168,13 +168,19 @@
 <h3 id="02-hostname-处理">02. HOSTNAME 处理</h3>
 
 <p>01) 修改服务器的 hostname，使用命令 hostnamectl set-hostname <new_host_name></p>
-
-<p>192.168.6.171 中: hostnamectl set-hostname hdpmmaster<br />
-192.168.6.172 中: hostnamectl set-hostname hdpsmaster<br />
-192.168.6.67 &ensp;中: hostnamectl set-hostname hdpslave67<br />
-192.168.6.68 &ensp;中: hostnamectl set-hostname hdpslave68<br />
-192.168.6.69 &ensp;中: hostnamectl set-hostname hdpslave69</p>
-
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">+---------------+----------------------------------------------
++IP             +command
++---------------+----------------------------------------------
+|192.168.6.171  |hostnamectl set-hostname hdpmmaster
++---------------+----------------------------------------------
+|192.168.6.172  |hostnamectl set-hostname hdpsmaster
++---------------+----------------------------------------------
+|192.168.6.67   |hostnamectl set-hostname hdpslave67
++---------------+----------------------------------------------
+|192.168.6.68   |hostnamectl set-hostname hdpslave68
++---------------+----------------------------------------------
+|192.168.6.69   |hostnamectl set-hostname hdpslave69
++---------------+----------------------------------------------</pre></div>
 <p>02) 向/etc/hosts文件中添加域名和IP的映射，内容如下</p>
 <div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">192.168.6.171           hdpmmaster
 192.168.6.172           hdpsmaster
