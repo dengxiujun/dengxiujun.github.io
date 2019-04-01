@@ -36,7 +36,7 @@
 
 <meta itemprop="datePublished" content="2019-04-01T10:55:56&#43;08:00" />
 <meta itemprop="dateModified" content="2019-04-01T10:55:56&#43;08:00" />
-<meta itemprop="wordCount" content="1760">
+<meta itemprop="wordCount" content="1759">
 
 
 
@@ -109,47 +109,84 @@ CONNECT(基本的连接), RESOURCE(程序开发), DBA(数据库管理)<br />
 常用的数据对象权限有以下五个:<br />
 ALL ON 数据对象名, SELECT ON 数据对象名, UPDATE ON 数据对象名, DELETE ON 数据对象名, INSERT ON 数据对象名, ALTER ON 数据对象名</p>
 
-<p>GRANT CONNECT, RESOURCE TO <TABLE_NAME>;<br />
-GRANT SELECT ON <TABLE_NAME> TO <USER_NAME>;<br />
-GRANT SELECT, INSERT, DELETE ON <TABLE_NAME> TO <USER_NAME>, <USER_NAME>;</p>
+<pre><code>GRANT CONNECT, RESOURCE TO &lt;TABLE_NAME&gt;;
+GRANT SELECT ON &lt;TABLE_NAME&gt; TO &lt;USER_NAME&gt;;
+GRANT SELECT, INSERT, DELETE ON &lt;TABLE_NAME&gt; TO &lt;USER_NAME&gt;, &lt;USER_NAME&gt;;
+</code></pre>
 
 <h3 id="04-revoke-回收权限">04.REVOKE 回收权限</h3>
 
-<p>REVOKE CONNECT, RESOURCE FROM <USER_NAME>;<br />
-REVOKE SELECT ON <TABLE_NAME> FROM <USER_NAME>;<br />
-REVOKE SELECT, INSERT, DELETE ON <TABLE_NAME> FROM <USER_NAME>, <USER_NAME>;</p>
+<pre><code>REVOKE CONNECT, RESOURCE FROM &lt;USER_NAME&gt;;
+REVOKE SELECT ON &lt;TABLE_NAME&gt; FROM &lt;USER_NAME&gt;;
+REVOKE SELECT, INSERT, DELETE ON &lt;TABLE_NAME&gt; FROM &lt;USER_NAME&gt;, &lt;USER_NAME&gt;;
+</code></pre>
 
 <h3 id="05-重建并修改默认临时表空间办法">05. 重建并修改默认临时表空间办法:</h3>
 
-<p>01) 查询当前数据库默认临时表空间名和查询临时表空间数据文件<br />
-select * from database_properties where property_name=&lsquo;DEFAULT_TEMP_TABLESPACE&rsquo;;<br />
-select tablespace_name,file_name,bytes/1024/1024 file_size,autoextensible from dba_temp_files;<br />
-02) 创建新的临时表空间<br />
-<code>create temporary tablespace temp02 tempfile 'E:\oracle\oradata\lims\TEMP02.DBF' size 1024M autoextend on;</code><br />
-03) 修改默认表空间为刚刚建立的临时表空间<br />
-<code>alter database default temporary tablespace temp02;</code><br />
-04) 查看用户所用临时表空间的情况<br />
-<code>SELECT USERNAME,TEMPORARY_TABLESPACE FROM DBA_USERS;</code><br />
-05) 删除原来的临时表空间<br />
-<code>drop tablespace temp including contents and datafiles;</code><br />
-06) 查看所有表空间名确认临时表空间是否已删除<br />
-<code>select tablespace_name from dba_tablespaces;</code></p>
+<p>01) 查询当前数据库默认临时表空间名和查询临时表空间数据文件</p>
+
+<pre><code>select * from database_properties where property_name='DEFAULT_TEMP_TABLESPACE';
+select tablespace_name,file_name,bytes/1024/1024 file_size,autoextensible from dba_temp_files;
+</code></pre>
+
+<p>02) 创建新的临时表空间</p>
+
+<pre><code>create temporary tablespace temp02 tempfile 'E:\oracle\oradata\lims\TEMP02.DBF' size 1024M autoextend on;
+</code></pre>
+
+<p>03) 修改默认表空间为刚刚建立的临时表空间</p>
+
+<pre><code>alter database default temporary tablespace temp02;
+</code></pre>
+
+<p>04) 查看用户所用临时表空间的情况</p>
+
+<pre><code>SELECT USERNAME,TEMPORARY_TABLESPACE FROM DBA_USERS;
+</code></pre>
+
+<p>05) 删除原来的临时表空间</p>
+
+<pre><code>drop tablespace temp including contents and datafiles;
+</code></pre>
+
+<p>06) 查看所有表空间名确认临时表空间是否已删除</p>
+
+<pre><code>select tablespace_name from dba_tablespaces;
+</code></pre>
 
 <h3 id="06-临时表空间相关处理">06. 临时表空间相关处理</h3>
 
-<p>01) 查询默认临时表空间<br />
-<code>select * from database_properties where property_name='DEFAULT_TEMP_TABLESPACE';</code><br />
-02) 查询临时表空间数据文件状态:<br />
-<code>select tablespace_name,file_name,bytes/1024/1024 file_size,autoextensible from dba_temp_files;</code><br />
-03) 创建新的临时表空间<br />
-<code>create temporary tablespace temp_01 tempfile '/u01/app/oracle/oradata/XE/temp_01.dbf' size 1024M autoextend on;</code><br />
-04) 修改默认表空间为新的表空间<br />
-<code>alter database default temporary tablespace temp_01;</code><br />
-05) 修改临时表空间大小<br />
-<code>alter database tempfile '/u01/app/oracle/oradata/XE/temp.dbf' resize 512m;</code><br />
-06) 设置临时表空间自动增长<br />
-<code>alter database tempfile '/u01/app/oracle/oradata/XE/temp.dbf' autoextend on next 8m maxsize unlimited;</code><br />
-07) 查看临时表空间使用情况:</p>
+<p>01) 查询默认临时表空间</p>
+
+<pre><code>select * from database_properties where property_name='DEFAULT_TEMP_TABLESPACE';
+</code></pre>
+
+<p>02) 查询临时表空间数据文件状态:</p>
+
+<pre><code>select tablespace_name,file_name,bytes/1024/1024 file_size,autoextensible from dba_temp_files;
+</code></pre>
+
+<p>03) 创建新的临时表空间</p>
+
+<pre><code>create temporary tablespace temp_01 tempfile '/u01/app/oracle/oradata/XE/temp_01.dbf' size 1024M autoextend on;
+</code></pre>
+
+<p>04) 修改默认表空间为新的表空间</p>
+
+<pre><code>alter database default temporary tablespace temp_01;
+</code></pre>
+
+<p>05) 修改临时表空间大小</p>
+
+<pre><code>alter database tempfile '/u01/app/oracle/oradata/XE/temp.dbf' resize 512m;
+</code></pre>
+
+<p>06) 设置临时表空间自动增长</p>
+
+<pre><code>alter database tempfile '/u01/app/oracle/oradata/XE/temp.dbf' autoextend on next 8m maxsize unlimited;
+</code></pre>
+
+<p>07) 查看临时表空间使用情况:</p>
 
 <pre><code>SELECT tbs 表空间名, SUM(totalM) 总共大小M, SUM(usedM) 已使用空间M, SUM(remainedM) 剩余空间M, SUM(usedM) / SUM(totalM) * 100 已使用百分比, SUM(remainedM) / SUM(totalM) * 100 剩余百分比
 FROM (
@@ -164,17 +201,32 @@ FROM (
 
 <h3 id="07-表空间相关处理">07. 表空间相关处理</h3>
 
-<p>01) 扩展表空间<br />
-<code>alter database datafile '/u01/app/oracle/oradata/XE/system.dbf' resize 1024m;</code><br />
-02) 表空间自动增长<br />
-<code>alter system datafile '/u01/app/oracle/oradata/XE/system_01.dbf' autoextend on next 50m maxsize 500m;</code><br />
-03) 新增表空间数据文件<br />
-<code>alter tablespace system add datafile '/u01/app/oracle/oradata/XE/system_01.dbf' size 1024m;</code><br />
-04) 查询表空间的所有数据文件<br />
-<code>select * from dba_data_files where tablespace_name='SYSTEM';</code><br />
-05) 查询表属于哪个表空间<br />
-<code>select tablespace_name,table_name from user_talbes where table_name='employ';</code><br />
-06) 查看表空间使用情况</p>
+<p>01) 扩展表空间</p>
+
+<pre><code>alter database datafile '/u01/app/oracle/oradata/XE/system.dbf' resize 1024m;
+</code></pre>
+
+<p>02) 表空间自动增长</p>
+
+<pre><code>alter system datafile '/u01/app/oracle/oradata/XE/system_01.dbf' autoextend on next 50m maxsize 500m;
+</code></pre>
+
+<p>03) 新增表空间数据文件</p>
+
+<pre><code>alter tablespace system add datafile '/u01/app/oracle/oradata/XE/system_01.dbf' size 1024m;
+</code></pre>
+
+<p>04) 查询表空间的所有数据文件</p>
+
+<pre><code>select * from dba_data_files where tablespace_name='SYSTEM';
+</code></pre>
+
+<p>05) 查询表属于哪个表空间</p>
+
+<pre><code>select tablespace_name,table_name from user_talbes where table_name='employ';
+</code></pre>
+
+<p>06) 查看表空间使用情况</p>
 
 <pre><code>SELECT tbs 表空间名, SUM(totalM) 总共大小M, SUM(usedM) 已使用空间M, SUM(remainedM) 剩余空间M, SUM(usedM) / SUM(totalM) * 100 已使用百分比, SUM(remainedM) / SUM(totalM) * 100 剩余百分比
 FROM (
@@ -192,13 +244,37 @@ FROM (
 <p>01) sql语句和sql命令虽然大小写都可以, 但是建议大写, 大写执行速度快, 同时有些命令只能大写!<br />
 02) sql语句和sql命令必须用分号结尾, cmd中的命令不用分号!<br />
 03) sqlplus 登录密码区分大小写
-04) 查询 DIRECTORY 操作需要的权限: SELECT DISTINCT PRIVILEGE FROM DBA_SYS_PRIVS WHERE PRIVILEGE LIKE &lsquo;%DIRECTORY%&rsquo;;<br />
-05) 查询当前设定的目录配置: SELECT * FROM DBA_DIRECTORIES;<br />
-06) 赋予SCOTT用户删除和创建目录配置的权限: GRANT DROP ANY DIRECTORY, CREATE ANY DIRECTORY TO SCOTT;<br />
-07) 回收SCOTT用户删除和创建目录配置的权限: REVOKE DROP ANY DIRECTORY, CREATE ANY DIRECTORY FROM SCOTT;<br />
-08) 创建某个目录配置: CREATE OR REPLACE DIRECTORY <dir_name> AS <dir_path>;<br />
-09) 删除某个目录配置: DROP DIRECTORY <dir_name>;..
-10) 赋予和回收某个目录的读写权限:</p>
+04) 查询 DIRECTORY 操作需要的权限</p>
+
+<pre><code>SELECT DISTINCT PRIVILEGE FROM DBA_SYS_PRIVS WHERE PRIVILEGE LIKE '%DIRECTORY%';
+</code></pre>
+
+<p>05) 查询当前设定的目录配置</p>
+
+<pre><code>SELECT * FROM DBA_DIRECTORIES;
+</code></pre>
+
+<p>06) 赋予SCOTT用户删除和创建目录配置的权限</p>
+
+<pre><code>GRANT DROP ANY DIRECTORY, CREATE ANY DIRECTORY TO SCOTT;
+</code></pre>
+
+<p>07) 回收SCOTT用户删除和创建目录配置的权限</p>
+
+<pre><code>REVOKE DROP ANY DIRECTORY, CREATE ANY DIRECTORY FROM SCOTT;
+</code></pre>
+
+<p>08) 创建某个目录配置</p>
+
+<pre><code>CREATE OR REPLACE DIRECTORY &lt;dir_name&gt; AS &lt;dir_path&gt;;
+</code></pre>
+
+<p>09) 删除某个目录配置</p>
+
+<pre><code>DROP DIRECTORY &lt;dir_name&gt;;
+</code></pre>
+
+<p>10) 赋予和回收某个目录的读写权限:</p>
 
 <pre><code>GRANT READ ON DIRECTORY &lt;dir_name&gt; TO SCOTT;
 GRANT WRITE ON DIRECTORY &lt;dir_name&gt; TO SCOTT;
