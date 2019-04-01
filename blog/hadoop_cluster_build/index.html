@@ -98,10 +98,10 @@
 
 <h3 id="01-创建hadoop用户">01. 创建hadoop用户</h3>
 
-<p>01) 新建用户: adduser hadoop(注: 在创建hadoop用户的同时也创建了hadoop用户组)
-02) 给hadoop用户添加登录密码: passwd hadoop
-03) 把hadoop用户加入到hadoop用户组: usermod -a -G hadoop hadoop
-03) 赋予用户root权限, 向/etc/sudoers中添加&rdquo;hadoop ALL=(ALL) ALL&rdquo;，如果没有写的权限需要先执行 chmod +w /etc/sudoers
+<p>01) 新建用户: adduser hadoop(注: 在创建hadoop用户的同时也创建了hadoop用户组)<br />
+02) 给hadoop用户添加登录密码: passwd hadoop<br />
+03) 把hadoop用户加入到hadoop用户组: usermod -a -G hadoop hadoop<br />
+03) 赋予用户root权限, 向/etc/sudoers中添加&rdquo;hadoop ALL=(ALL) ALL&rdquo;，如果没有写的权限需要先执行 chmod +w /etc/sudoers<br />
 注：以上所有操作都是在root用户下完成，非root用户可以在所有命令前加sudo</p>
 
 <h3 id="02-hostname-处理">02. HOSTNAME 处理</h3>
@@ -109,7 +109,7 @@
 <p>01) 修改服务器的 hostname，使用命令 hostnamectl set-hostname <new_host_name></p>
 
 <pre><code>+---------------+----------------------------------------------
-+IP             +command
++IP             |command
 +---------------+----------------------------------------------
 |192.168.6.171  |hostnamectl set-hostname hdpmmaster
 +---------------+----------------------------------------------
