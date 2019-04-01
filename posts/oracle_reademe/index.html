@@ -211,50 +211,15 @@ REVOKE SELECT, INSERT, DELETE ON <TABLE_NAME> FROM <USER_NAME>, <USER_NAME>;</p>
 select * from database_properties where property_name=&lsquo;DEFAULT_TEMP_TABLESPACE&rsquo;;<br />
 select tablespace_name,file_name,bytes/1024/1024 file_size,autoextensible from dba_temp_files;<br />
 02) 创建新的临时表空间<br />
-create temporary tablespace temp02 tempfile &lsquo;E:\oracle\oradata\lims\TEMP02.DBF&rsquo; size 1024M autoextend on;<br />
+<code>create temporary tablespace temp02 tempfile 'E:\oracle\oradata\lims\TEMP02.DBF' size 1024M autoextend on;</code><br />
 03) 修改默认表空间为刚刚建立的临时表空间<br />
-alter database default temporary tablespace temp02;<br />
-&ndash; 查看用户所用临时表空间的情况<br />
-SELECT USERNAME,TEMPORARY_TABLESPACE FROM DBA_USERS;<br />
-&ndash; 删除原来的临时表空间<br />
-drop tablespace temp including contents and datafiles;<br />
-&ndash; 查看所有表空间名确认临时表空间是否已删除<br />
-select tablespace_name from dba_tablespaces;</p>
-
-<h3 id="00-备忘">00. 备忘</h3>
-
-<p>01) sql语句和sql命令虽然大小写都可以, 但是建议大写, 大写执行速度快, 同时有些命令只能大写!<br />
-02) sql语句和sql命令必须用分号结尾, cmd中的命令不用分号!<br />
-03) sqlplus 登录密码区分大小写
-04) 查询 DIRECTORY 操作需要的权限: SELECT DISTINCT PRIVILEGE FROM DBA_SYS_PRIVS WHERE PRIVILEGE LIKE &lsquo;%DIRECTORY%&rsquo;;<br />
-05) 查询当前设定的目录配置: SELECT * FROM DBA_DIRECTORIES;<br />
-06) 赋予SCOTT用户删除和创建目录配置的权限: GRANT DROP ANY DIRECTORY, CREATE ANY DIRECTORY TO SCOTT;<br />
-07) 回收SCOTT用户删除和创建目录配置的权限: REVOKE DROP ANY DIRECTORY, CREATE ANY DIRECTORY FROM SCOTT;<br />
-08) 创建某个目录配置: CREATE OR REPLACE DIRECTORY <dir_name> AS <dir_path>;<br />
-09) 删除某个目录配置: DROP DIRECTORY <dir_name>;..
-10) 赋予和回收某个目录的读写权限:</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">GRANT READ ON DIRECTORY &lt;dir_name&gt; TO SCOTT;
-GRANT WRITE ON DIRECTORY &lt;dir_name&gt; TO SCOTT;
-REVOKE READ ON DIRECTORY &lt;dir_name&gt; FROM SCOTT;
-REVOKE WRITE ON DIRECTORY &lt;dir_name&gt; FROM SCOTT;</pre></div>
-<p>11) 查询当前schma下的所有表: SELECT T.* FROM USER_TABLES T;<br />
-12) 查出所有表和对应schma以及表的字段</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">SELECT DISTINCT DCC.OWNER AS &#34;用户&#34;, DCC.TABLE_NAME AS &#34;表名&#34;, DCC.COLUMN_NAME AS &#34;字段名&#34;, DTC.DATA_TYPE AS &#34;数据类型&#34;, DCC.COMMENTS AS &#34;字段描述&#34;,
-       (CASE WHEN CONSTS.COLUMN_NAME IS NOT NULL THEN &#39;是&#39; ELSE &#39;&#39; END) AS &#34;是否主键&#34;
-FROM DBA_TAB_COLS DTC
-LEFT JOIN DBA_COL_COMMENTS DCC ON (DTC.COLUMN_NAME = DCC.COLUMN_NAME AND DTC.TABLE_NAME = DCC.TABLE_NAME AND DTC.OWNER = DCC.OWNER)
-LEFT JOIN DBA_TAB_COMMENTS UTC ON (DTC. OWNER = UTC. OWNER AND DTC.TABLE_NAME = UTC.TABLE_NAME)
-LEFT JOIN (SELECT CU.* FROM DBA_CONS_COLUMNS CU, DBA_CONSTRAINTS AU WHERE CU.CONSTRAINT_NAME = AU.CONSTRAINT_NAME AND AU.CONSTRAINT_TYPE = &#39;P&#39; ) CONSTS
-  ON (DTC.OWNER = CONSTS.OWNER AND DTC.TABLE_NAME = CONSTS.TABLE_NAME AND DTC.COLUMN_NAME = CONSTS.COLUMN_NAME)
-WHERE DTC.OWNER IN (&#39;BOMMGMT&#39;, &#39;CFGMGMT&#39;, &#39;CHGMGMT&#39;, &#39;CORE&#39;, &#39;CUST&#39;, &#39;MSTDATA&#39;, &#39;INTEGRATION&#39;)
-ORDER BY DCC.OWNER, DCC.TABLE_NAME;</pre></div>
-<p>13) 数据库死锁查询</p>
-<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">select s.username,l.object_id, l.session_id,s.serial#, s.lockwait,s.status,s.machine,s.program from v$session s,v$locked_object l where s.sid = l.session_id;
-select sql_text from v$sql where hash_value in (select sql_hash_value from v$session where sid in  (select session_id from v$locked_object));
-select distinct  &#39;alter system kill session &#39;&#39;&#39; ||sid||&#39;,&#39;||serial#||&#39;&#39;&#39;&#39;||&#39;;&#39; as &#34;kill sql&#34; from V$locked_object t1 left join V$session t2 on t1.session_id = t2.sid;</pre></div>
-<p>14) 约束查询: SELECT UC.TABLE_NAME, UC.CONSTRAINT_NAME, UC.* FROM USER_CONSTRAINTS UC;<br />
-15) 查询所有列名: SELECT * FROM ALL_TAB_COLS WHERE TABLE_NAME = &lsquo;XXX&rsquo;;<br />
-16) 查找alert日志, 需要通过 sqlplus / as sysdba 登陆, 然后输入: show parameter dump;</p>
+<code>alter database default temporary tablespace temp02;</code><br />
+04) 查看用户所用临时表空间的情况<br />
+<code>SELECT USERNAME,TEMPORARY_TABLESPACE FROM DBA_USERS;</code><br />
+05) 删除原来的临时表空间<br />
+<code>drop tablespace temp including contents and datafiles;</code><br />
+06) 查看所有表空间名确认临时表空间是否已删除<br />
+<code>select tablespace_name from dba_tablespaces;</code></p>
 
 <h3 id="06-临时表空间相关处理">06. 临时表空间相关处理</h3>
 
@@ -302,6 +267,41 @@ FROM (
   GROUP BY tb.tablespace_name, tb.file_name, tb.file_id, tb.bytes
   ORDER BY tb.tablespace_name
 ) GROUP BY tbs;</pre></div>
+<h3 id="00-其它备忘">00. 其它备忘</h3>
+
+<p>01) sql语句和sql命令虽然大小写都可以, 但是建议大写, 大写执行速度快, 同时有些命令只能大写!<br />
+02) sql语句和sql命令必须用分号结尾, cmd中的命令不用分号!<br />
+03) sqlplus 登录密码区分大小写
+04) 查询 DIRECTORY 操作需要的权限: SELECT DISTINCT PRIVILEGE FROM DBA_SYS_PRIVS WHERE PRIVILEGE LIKE &lsquo;%DIRECTORY%&rsquo;;<br />
+05) 查询当前设定的目录配置: SELECT * FROM DBA_DIRECTORIES;<br />
+06) 赋予SCOTT用户删除和创建目录配置的权限: GRANT DROP ANY DIRECTORY, CREATE ANY DIRECTORY TO SCOTT;<br />
+07) 回收SCOTT用户删除和创建目录配置的权限: REVOKE DROP ANY DIRECTORY, CREATE ANY DIRECTORY FROM SCOTT;<br />
+08) 创建某个目录配置: CREATE OR REPLACE DIRECTORY <dir_name> AS <dir_path>;<br />
+09) 删除某个目录配置: DROP DIRECTORY <dir_name>;..
+10) 赋予和回收某个目录的读写权限:</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">GRANT READ ON DIRECTORY &lt;dir_name&gt; TO SCOTT;
+GRANT WRITE ON DIRECTORY &lt;dir_name&gt; TO SCOTT;
+REVOKE READ ON DIRECTORY &lt;dir_name&gt; FROM SCOTT;
+REVOKE WRITE ON DIRECTORY &lt;dir_name&gt; FROM SCOTT;</pre></div>
+<p>11) 查询当前schma下的所有表: SELECT T.* FROM USER_TABLES T;<br />
+12) 查出所有表和对应schma以及表的字段</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">SELECT DISTINCT DCC.OWNER AS &#34;用户&#34;, DCC.TABLE_NAME AS &#34;表名&#34;, DCC.COLUMN_NAME AS &#34;字段名&#34;, DTC.DATA_TYPE AS &#34;数据类型&#34;, DCC.COMMENTS AS &#34;字段描述&#34;,
+       (CASE WHEN CONSTS.COLUMN_NAME IS NOT NULL THEN &#39;是&#39; ELSE &#39;&#39; END) AS &#34;是否主键&#34;
+FROM DBA_TAB_COLS DTC
+LEFT JOIN DBA_COL_COMMENTS DCC ON (DTC.COLUMN_NAME = DCC.COLUMN_NAME AND DTC.TABLE_NAME = DCC.TABLE_NAME AND DTC.OWNER = DCC.OWNER)
+LEFT JOIN DBA_TAB_COMMENTS UTC ON (DTC. OWNER = UTC. OWNER AND DTC.TABLE_NAME = UTC.TABLE_NAME)
+LEFT JOIN (SELECT CU.* FROM DBA_CONS_COLUMNS CU, DBA_CONSTRAINTS AU WHERE CU.CONSTRAINT_NAME = AU.CONSTRAINT_NAME AND AU.CONSTRAINT_TYPE = &#39;P&#39; ) CONSTS
+  ON (DTC.OWNER = CONSTS.OWNER AND DTC.TABLE_NAME = CONSTS.TABLE_NAME AND DTC.COLUMN_NAME = CONSTS.COLUMN_NAME)
+WHERE DTC.OWNER IN (&#39;BOMMGMT&#39;, &#39;CFGMGMT&#39;, &#39;CHGMGMT&#39;, &#39;CORE&#39;, &#39;CUST&#39;, &#39;MSTDATA&#39;, &#39;INTEGRATION&#39;)
+ORDER BY DCC.OWNER, DCC.TABLE_NAME;</pre></div>
+<p>13) 数据库死锁查询</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">select s.username,l.object_id, l.session_id,s.serial#, s.lockwait,s.status,s.machine,s.program from v$session s,v$locked_object l where s.sid = l.session_id;
+select sql_text from v$sql where hash_value in (select sql_hash_value from v$session where sid in  (select session_id from v$locked_object));
+select distinct  &#39;alter system kill session &#39;&#39;&#39; ||sid||&#39;,&#39;||serial#||&#39;&#39;&#39;&#39;||&#39;;&#39; as &#34;kill sql&#34; from V$locked_object t1 left join V$session t2 on t1.session_id = t2.sid;</pre></div>
+<p>14) 约束查询: SELECT UC.TABLE_NAME, UC.CONSTRAINT_NAME, UC.* FROM USER_CONSTRAINTS UC;<br />
+15) 查询所有列名: SELECT * FROM ALL_TAB_COLS WHERE TABLE_NAME = &lsquo;XXX&rsquo;;<br />
+16) 查找alert日志, 需要通过 sqlplus / as sysdba 登陆, 然后输入: show parameter dump;</p>
+
       </div>
 
       <footer>
