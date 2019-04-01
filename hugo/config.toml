@@ -1,0 +1,47 @@
+baseurl = "https://dengxiujun.github.io"
+title = "jun's home"
+theme = "pulp"
+canonifyurls = true
+hasCJKLanguage = true
+# pygmentsCodefences = true
+# pygmentsUseClasses = true
+# googleAnalytics = "{your tracking code}"
+
+[taxonomies]
+  series = "series"
+
+[params]
+    author = ""
+    avatar = "avatar.jpg"
+    favicon = "favicon.ico"
+    discription = """
+        无 话 可 说
+    """
+    publicationYear = "2019"
+    listPageDateFormat = "January, 2006" # See https://gohugo.io/functions/format/
+    singlePageDateFormat = "January 2, 2006"
+    # custom_css = ["/css/custom.css"]
+    # custom_js = ["/js/custom.js"]
+
+[outputs]
+    section = ["JSON", "HTML"]
+
+[[menu.main]]
+    name = "Blog"
+    pre = "<i class='fa fa-book-open fa-lg' title='Blog'></i>" #Choose your favorite font from Font Awesome
+    url = "/blog/"
+    weight = 1
+
+[[menu.main]]
+    name = "GitHub"
+    pre = "<i class='fab fa-github fa-lg' title='GitHub'></i>"
+    url = "https://github.com/dengxiujun"
+    weight = 2
+
+[[menu.main]]
+    name = "Email"
+    pre = "<i class='fa fa-envelope fa-lg' title='Email'></i>"
+    url = "me_dengxiujun@163.com"
+    weight = 3
+
+
