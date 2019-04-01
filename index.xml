@@ -16,7 +16,7 @@
       <pubDate>Mon, 01 Apr 2019 10:55:56 +0800</pubDate>
       
       <guid>https://dengxiujun.github.io/blog/oracle_reademe/</guid>
-      <description>01. dmp文件导入步骤 01) 用管理员登录, system as sysdba 或者 sys as sysdba 02) 创建用户 CREATE USER IDENTIFIED BY ; 03) 赋权限给新用户 GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW, EXP_FULL_DATABASE, IMP_FULL_DATABASE, DBA, CONNECT, RESOURCE, CREATE SESSION TO &amp;lt;用</description>
+      <description>01. dmp文件导入步骤 01) 用管理员登录: # 方法一 system as sysdba # 方法二 sys as sysdba 02) 创建用户 CREATE USER &amp;lt;USERNAME&amp;gt; IDENTIFIED BY &amp;lt;PASSWORD&amp;gt;; 03) 赋权限给新用户 GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW, EXP_FULL_DATABASE, IMP_FULL_DATABASE, DBA, CONNECT, RESOURCE, CREATE</description>
     </item>
     
     <item>

@@ -24,26 +24,26 @@
   
 
   <meta property="og:title" content="oracle 记录" />
-<meta property="og:description" content="01. dmp文件导入步骤 01) 用管理员登录, system as sysdba 或者 sys as sysdba 02) 创建用户 CREATE USER IDENTIFIED BY ; 03) 赋权限给新用户 GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW, EXP_FULL_DATABASE, IMP_FULL_DATABASE, DBA, CONNECT, RESOURCE, CREATE SESSION TO &lt;用" />
+<meta property="og:description" content="01. dmp文件导入步骤 01) 用管理员登录: # 方法一 system as sysdba # 方法二 sys as sysdba 02) 创建用户 CREATE USER &lt;USERNAME&gt; IDENTIFIED BY &lt;PASSWORD&gt;; 03) 赋权限给新用户 GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW, EXP_FULL_DATABASE, IMP_FULL_DATABASE, DBA, CONNECT, RESOURCE, CREATE" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://dengxiujun.github.io/blog/oracle_reademe/" />
 <meta property="article:published_time" content="2019-04-01T10:55:56&#43;08:00"/>
 <meta property="article:modified_time" content="2019-04-01T10:55:56&#43;08:00"/>
 
 <meta itemprop="name" content="oracle 记录">
-<meta itemprop="description" content="01. dmp文件导入步骤 01) 用管理员登录, system as sysdba 或者 sys as sysdba 02) 创建用户 CREATE USER IDENTIFIED BY ; 03) 赋权限给新用户 GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW, EXP_FULL_DATABASE, IMP_FULL_DATABASE, DBA, CONNECT, RESOURCE, CREATE SESSION TO &lt;用">
+<meta itemprop="description" content="01. dmp文件导入步骤 01) 用管理员登录: # 方法一 system as sysdba # 方法二 sys as sysdba 02) 创建用户 CREATE USER &lt;USERNAME&gt; IDENTIFIED BY &lt;PASSWORD&gt;; 03) 赋权限给新用户 GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW, EXP_FULL_DATABASE, IMP_FULL_DATABASE, DBA, CONNECT, RESOURCE, CREATE">
 
 
 <meta itemprop="datePublished" content="2019-04-01T10:55:56&#43;08:00" />
 <meta itemprop="dateModified" content="2019-04-01T10:55:56&#43;08:00" />
-<meta itemprop="wordCount" content="1759">
+<meta itemprop="wordCount" content="1796">
 
 
 
 <meta itemprop="keywords" content="oracle,oracle 临时表空间,oracle表空间,oracle 导入导出,oracle 常用操作," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="oracle 记录"/>
-<meta name="twitter:description" content="01. dmp文件导入步骤 01) 用管理员登录, system as sysdba 或者 sys as sysdba 02) 创建用户 CREATE USER IDENTIFIED BY ; 03) 赋权限给新用户 GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW, EXP_FULL_DATABASE, IMP_FULL_DATABASE, DBA, CONNECT, RESOURCE, CREATE SESSION TO &lt;用"/>
+<meta name="twitter:description" content="01. dmp文件导入步骤 01) 用管理员登录: # 方法一 system as sysdba # 方法二 sys as sysdba 02) 创建用户 CREATE USER &lt;USERNAME&gt; IDENTIFIED BY &lt;PASSWORD&gt;; 03) 赋权限给新用户 GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW, EXP_FULL_DATABASE, IMP_FULL_DATABASE, DBA, CONNECT, RESOURCE, CREATE"/>
 
   <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -77,30 +77,112 @@
 
 <h3 id="01-dmp文件导入步骤">01. dmp文件导入步骤</h3>
 
-<p>01) 用管理员登录, system as sysdba 或者 sys as sysdba<br />
-02) 创建用户 CREATE USER <USERNAME> IDENTIFIED BY <PASSWORD>;<br />
-03) 赋权限给新用户<br />
-    GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW, EXP_FULL_DATABASE, IMP_FULL_DATABASE, DBA, CONNECT, RESOURCE, CREATE SESSION TO &lt;用户名&gt;;<br />
-04) 进入cmd窗口, IMP <USERNAME>/<PASSWORD>@<SID> FILE=D:\XXX.DMP FULL=Y;
-05) 导出命令:<br />
-    导出某些指定的表: exp <username>/<password>@<SID> file=d:\xxx.dmp tables=(table1,table2,table3)<br />
-    导出某个用户的表: exp <username>/<password>@<SID> file=d:\xxx.dmp owner=<username></p>
+<p>01) 用管理员登录:</p>
+
+<pre><code># 方法一
+system as sysdba
+# 方法二
+sys as sysdba
+</code></pre>
+
+<p>02) 创建用户</p>
+
+<pre><code>CREATE USER &lt;USERNAME&gt; IDENTIFIED BY &lt;PASSWORD&gt;;
+</code></pre>
+
+<p>03) 赋权限给新用户</p>
+
+<pre><code>GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW, EXP_FULL_DATABASE, IMP_FULL_DATABASE, DBA, CONNECT, RESOURCE, CREATE SESSION TO &lt;用户名&gt;;
+</code></pre>
+
+<p>04) 打开cmd窗口</p>
+
+<pre><code>IMP &lt;USERNAME&gt;/&lt;PASSWORD&gt;@&lt;SID&gt; FILE=D:\\XXX.DMP FULL=Y;
+</code></pre>
+
+<p>05) 导出命令:</p>
+
+<pre><code># 导出某些指定的表:
+exp &lt;username&gt;/&lt;password&gt;@&lt;SID&gt; file=d:\\xxx.dmp tables=(table1,table2,table3)
+# 导出某个用户的表:
+exp &lt;username&gt;/&lt;password&gt;@&lt;SID&gt; file=d:\\xxx.dmp owner=&lt;username&gt;
+</code></pre>
 
 <h3 id="02-常用操作">02. 常用操作</h3>
 
-<p>01) 切换用户: CONNECT SYS/123456 AS SYSDBA; 或者 CONN SCOTT/TIGER; CONN 与 CONNECT 一样!<br />
-02) 退出sqlplus: EXIT;<br />
-03) 从cmd进入sqlplus: sqlplus /nolog 或 sqlplus / as sysdba<br />
-04) 描述表 DESC <TABLENAME>;<br />
-05) 表结构修改字段: ALTER TABLE <TABLE_NAME> MODIFY (<FIELD_NAME> <FIELD_TYPE>);<br />
-06) 表结构增加字段: ALTER TABLE <TABLE_NAME> ADD <FIELD_NAME> <FIELD_TYPE>;<br />
-07) 表结构增加注释: COMMENT ON COLUMN <TABLE_NAME>.<FIELD_NAME> IS &lsquo;<COMMENT_CONTENT>&rsquo;;<br />
-08) 显示当前用户: SHOW USER;<br />
-09) 解锁用户: ALTER USER <USERNAME> ACCOUNT UNLOCK;<br />
-10) 修改用户密码: ALTER USER <USERNAME> IDENTIFIED BY <NEW_PASSWORD>;<br />
-11) 显示当前数据库实例: SHOW PARAMETER INTANCE; 或者 SELECT INSTANCE_NAME FROM V$INSTANCE;<br />
-12) sql语句case when 的用法: case when <condition> then <what to do when condition is true> else <what to do when condition is false> end<br />
-13) 表结构字段名称修改: ALTER TABLE <TABLE_NAME> RENAME COLUMN <OLD_FIELD_NAME> TO <NEW_FIELD_NAME>;</p>
+<p>01) 切换用户</p>
+
+<pre><code># 方式一
+CONNECT SYS/123456 AS SYSDBA;
+# 方式二
+CONN SCOTT/TIGER;
+</code></pre>
+
+<p>02) 退出sqlplus:</p>
+
+<pre><code>EXIT;
+</code></pre>
+
+<p>03) 免登录进入 sqlplus:</p>
+
+<pre><code># 方式一
+sqlplus /nolog
+# 方式二
+sqlplus / as sysdba
+</code></pre>
+
+<p>04) 查询表信息:</p>
+
+<pre><code>DESC &lt;TABLENAME&gt;;
+</code></pre>
+
+<p>05) 表结构修改字段:</p>
+
+<pre><code>ALTER TABLE &lt;TABLE_NAME&gt; MODIFY (&lt;FIELD_NAME&gt; &lt;FIELD_TYPE&gt;);
+</code></pre>
+
+<p>06) 表结构增加字段:</p>
+
+<pre><code>ALTER TABLE &lt;TABLE_NAME&gt; ADD &lt;FIELD_NAME&gt; &lt;FIELD_TYPE&gt;;
+</code></pre>
+
+<p>07) 表结构增加注释:</p>
+
+<pre><code>COMMENT ON COLUMN &lt;TABLE_NAME&gt;.&lt;FIELD_NAME&gt; IS '&lt;COMMENT_CONTENT&gt;';
+</code></pre>
+
+<p>08) 显示当前用户:</p>
+
+<pre><code>SHOW USER;
+</code></pre>
+
+<p>09) 解锁用户:</p>
+
+<pre><code>ALTER USER &lt;USERNAME&gt; ACCOUNT UNLOCK;
+</code></pre>
+
+<p>10) 修改用户密码:</p>
+
+<pre><code>ALTER USER &lt;USERNAME&gt; IDENTIFIED BY &lt;NEW_PASSWORD&gt;;
+</code></pre>
+
+<p>11) 显示当前数据库实例:</p>
+
+<pre><code># 方式一
+SHOW PARAMETER INTANCE;
+# 方式二
+SELECT INSTANCE_NAME FROM V$INSTANCE;
+</code></pre>
+
+<p>12) sql语句case when 的用法:</p>
+
+<pre><code>case when &lt;condition&gt; then &lt;what to do when condition is true&gt; else &lt;what to do when condition is false&gt; end
+</code></pre>
+
+<p>13) 表结构字段名称修改:</p>
+
+<pre><code>ALTER TABLE &lt;TABLE_NAME&gt; RENAME COLUMN &lt;OLD_FIELD_NAME&gt; TO &lt;NEW_FIELD_NAME&gt;;
+</code></pre>
 
 <h3 id="03-grant-赋于权限">03.GRANT 赋于权限</h3>
 
