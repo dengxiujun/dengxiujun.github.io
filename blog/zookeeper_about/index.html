@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>
+      
+          zookeeper 安装教程和备忘 - jun&#39;s home
+      
+  </title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="map[]" />
+  <link rel="shortcut icon" type="image/x-icon" href="https://dengxiujun.github.io/img/favicon.ico">
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://dengxiujun.github.io/style.min.7135f8265f0e5668aaf68b968cf560537cb8017044dfb3bdcd7a5d0d8a806b3d.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+  
+  
+
+  <meta property="og:title" content="zookeeper 安装教程和备忘" />
+<meta property="og:description" content="准备工作 01] 官网下载 ZooKeeper 单机搭建 01] 解压压缩包到指定目录，本人这里的目录是 /usr/local/share/zookeeper-3.4.12/ 02] 复制 conf/zoo_samaple.cfg，并修改文件名称为 zoo.cfg 03] 编" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dengxiujun.github.io/blog/zookeeper_about/" />
+<meta property="article:published_time" content="2019-04-04T15:48:19&#43;08:00"/>
+<meta property="article:modified_time" content="2019-04-04T15:48:19&#43;08:00"/>
+
+<meta itemprop="name" content="zookeeper 安装教程和备忘">
+<meta itemprop="description" content="准备工作 01] 官网下载 ZooKeeper 单机搭建 01] 解压压缩包到指定目录，本人这里的目录是 /usr/local/share/zookeeper-3.4.12/ 02] 复制 conf/zoo_samaple.cfg，并修改文件名称为 zoo.cfg 03] 编">
+
+
+<meta itemprop="datePublished" content="2019-04-04T15:48:19&#43;08:00" />
+<meta itemprop="dateModified" content="2019-04-04T15:48:19&#43;08:00" />
+<meta itemprop="wordCount" content="1141">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="zookeeper 安装教程和备忘"/>
+<meta name="twitter:description" content="准备工作 01] 官网下载 ZooKeeper 单机搭建 01] 解压压缩包到指定目录，本人这里的目录是 /usr/local/share/zookeeper-3.4.12/ 02] 复制 conf/zoo_samaple.cfg，并修改文件名称为 zoo.cfg 03] 编"/>
+
+  <!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+  <!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <![endif]-->
+
+  </head>
+
+  <body>
+    
+  <h1>zookeeper 安装教程和备忘</h1>
+  <header>
+  
+  <div class="avatar">
+    <img class="avatarMask" src="https://dengxiujun.github.io/img/avatar.jpg">
+    <a href="https://dengxiujun.github.io"><img src="https://dengxiujun.github.io/img/avatar-border.svg" }}></a>
+  </div>
+  
+  <h2><a class="author" href="https://dengxiujun.github.io" style="text-decoration:none;"></a></h2>
+</header>
+
+  
+  <p class="date">April 4, 2019</p>
+  
+  <div id="contentBody">
+    
+
+<h3 id="准备工作">准备工作</h3>
+
+<p>01] 官网下载 ZooKeeper</p>
+
+<h3 id="单机搭建">单机搭建</h3>
+
+<p>01] 解压压缩包到指定目录，本人这里的目录是 /usr/local/share/zookeeper-3.4.12/<br />
+02] 复制 conf/zoo_samaple.cfg，并修改文件名称为 zoo.cfg<br />
+03] 编辑 conf/zoo.cfg 文件，主要是指定 dataDir，即存放 znode 节点和数据的路径，内容如下</p>
+
+<pre><code># The number of milliseconds of each tick
+tickTime=2000
+# The number of ticks that the initial 
+# synchronization phase can take
+initLimit=10
+# The number of ticks that can pass between 
+# sending a request and getting an acknowledgement
+syncLimit=5
+# the directory where the snapshot is stored.
+# do not use /tmp for storage, /tmp here is just 
+# example sakes.
+dataDir=/app/zookeeper
+# the port at which the clients will connect
+clientPort=2181
+# the maximum number of client connections.
+# increase this if you need to handle more clients
+#maxClientCnxns=60
+#
+# Be sure to read the maintenance section of the 
+# administrator guide before turning on autopurge.
+#
+# http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance
+#
+# The number of snapshots to retain in dataDir
+#autopurge.snapRetainCount=3
+# Purge task interval in hours
+# Set to &quot;0&quot; to disable auto purge feature
+#autopurge.purgeInterval=1
+</code></pre>
+
+<p>04] 如果需要全局使用 ZooKeeper 相关脚本，可以在环境变量中添加 ZOOKEEPER_HOME=/usr/local/share/zookeeper-3.4.12/bin/</p>
+
+<p>05] ZooKeeper 相关命令如下:<br />
+01)  启动: bin/zkServer.sh start<br />
+&emsp;&emsp;停止: bin/zkServer.sh stop<br />
+02) 客户端连接: bin/zkCli.sh -server <ip>:<port><br />
+&emsp;&emsp;客户端断开: quit<br />
+03) 查看所有子节点: ls <path><br />
+04) 获得指定节点信息: get <path><br />
+05) 创建节点: create [-s] [-e] <path> <data> [<acl>]<br />
+&emsp;&emsp;-s : 表示创建顺序节点<br />
+&emsp;&emsp;-e : 表示创建临时节点<br />
+&emsp;&emsp;path : 节点路径<br />
+&emsp;&emsp;data : 节点数据<br />
+&emsp;&emsp;acl : 节点权限<br />
+06) 删除节点: delete <path>    注: 如果指定路径有子节点要先删除子节点<br />
+&emsp;&emsp;删除置顶节点及其子节点: rmr <path><br />
+07) 在当前节点中连接其它的ZooKeeper服务器: connect <host>:<port><br />
+&emsp;&emsp;关闭连接: close<br />
+08) 查看客户端本次会话执行命令历史: history<br />
+09) 指定历史命令: redo <history_no></p>
+
+<h3 id="集群搭建">集群搭建</h3>
+
+<p>注: 本教程集群搭建方式是伪集群的搭建方式，但和真机集群搭建方式并无任何太大出入<br />
+01] 复制 /usr/local/share/zookeeper-3.4.12/ 三份，并分别重命名为 zookeeper1、zookeeper2、zookeeper3<br />
+02] 逐一修改三个配置文件，内容如下:</p>
+
+<pre><code># The number of milliseconds of each tick
+tickTime=2000
+# The number of ticks that the initial 
+# synchronization phase can take
+initLimit=10
+# The number of ticks that can pass between 
+# sending a request and getting an acknowledgement
+syncLimit=5
+# the directory where the snapshot is stored.
+# do not use /tmp for storage, /tmp here is just 
+# example sakes.
+# 注: 真机搭建时可不修改该配置
+dataDir=/app/zookeeper1 #第二和第三个服务分别修改为 /app/zookeeper2、/app/zookeeper3
+# the port at which the clients will connect
+# 注: 真机搭建时可不修改该配置
+clientPort=2181 #第二和第三个服务分别修改为 2182、2183
+# the maximum number of client connections.
+# increase this if you need to handle more clients
+#maxClientCnxns=60
+#
+# Be sure to read the maintenance section of the 
+# administrator guide before turning on autopurge.
+#
+# http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance
+#
+# The number of snapshots to retain in dataDir
+#autopurge.snapRetainCount=3
+# Purge task interval in hours
+# Set to &quot;0&quot; to disable auto purge feature
+#autopurge.purgeInterval=1
+
+# 指定各个服务的id、ip、一般服务机器和一般服务机器的连接端口、leader机器和一般服务机器的连接端口
+server.1=localhost:2888:3888
+server.2=localhost:2889:3889
+server.3=localhost:2887:3887
+</code></pre>
+
+<p>03] 创建 /app/zookeeper1、/app/zookeeper2、/app/zookeeper3 这3个目录，并分别在这3个目录下创建myid文件; myid文件内容为 ZooKeeper 服务器id，即上述步骤02中最后3行中的 &ldquo;1&rdquo;、&rdquo;2、&rdquo;3&rdquo;; 例如，根据步骤02的配置文件，服务器1的myid文件内容就为&rdquo;1&rdquo;。<br />
+04] 逐一启动各个服务器，并连接测试各个服务器是否正常</p>
+
+  </div>
+  <footer>
+  <p>
+  &copy; 2019 .
+  Powered by <a href="https://gohugo.io/">Hugo</a>
+  using the <a href="https://github.com/koirand/pulp/">pulp</a> theme.
+  </p>
+</footer>
+
+
+  </body>
+</html>

@@ -5,10 +5,19 @@
     <link>https://dengxiujun.github.io/</link>
     <description>Recent content on jun&#39;s home</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 01 Apr 2019 10:55:56 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 04 Apr 2019 15:48:19 +0800</lastBuildDate>
     
 	<atom:link href="https://dengxiujun.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>zookeeper 安装教程和备忘</title>
+      <link>https://dengxiujun.github.io/blog/zookeeper_about/</link>
+      <pubDate>Thu, 04 Apr 2019 15:48:19 +0800</pubDate>
+      
+      <guid>https://dengxiujun.github.io/blog/zookeeper_about/</guid>
+      <description>准备工作 01] 官网下载 ZooKeeper 单机搭建 01] 解压压缩包到指定目录，本人这里的目录是 /usr/local/share/zookeeper-3.4.12/ 02] 复制 conf/zoo_samaple.cfg，并修改文件名称为 zoo.cfg 03] 编</description>
+    </item>
     
     <item>
       <title>oracle 记录</title>
